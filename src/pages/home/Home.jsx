@@ -1,6 +1,10 @@
 import React from 'react';
-import '../home/home.css';
+
 import Header from '../../components/Header';
+import Footer from '../../components/Footer';
+import Slider from '../../components/Slider';
+import Latest from '../../components/Latest';
+import Socials from '../../components/Socials';
 
 const Home = () => {
   return (
@@ -8,8 +12,14 @@ const Home = () => {
       <header className="header">
         <Header />
       </header>
-      <main>Main</main>
-      <footer>Footer</footer>
+      <main>
+        <Slider />
+        <Latest />
+        <Socials />
+      </main>
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 };

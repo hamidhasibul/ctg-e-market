@@ -23,3 +23,41 @@ body {
 a {
   text-decoration: none;
 }
+
+.active_link {
+  border-bottom: 2px solid orangered;
+}
+
+.sliderImage {
+  height: 30rem;
+  opacity: 0.6;
+  background-size: cover;
+}
+.carousel-item {
+  background-color: black;
+}
+
+.sliderLink {
+  text-decoration: none;
+}
+
+.card-image {
+  height: 25rem;
+  object-fit: contain;
+}
+.card-image-user {
+  height: 10rem;
+  object-fit: contain;
+}
+.product-link {
+  text-decoration: none;
+}
+
+.social-links {
+  text-decoration: none;
+  color: rgb(71, 71, 71);
+  transition: all 0.9s;
+}
+.social-links:hover {
+  transform: scale(1.2);
+}

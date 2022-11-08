@@ -1,7 +1,9 @@
 import React from 'react';
-import '../pages/home/home.css';
 
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
+
+const activeLink = ({ isActive }) =>
+  isActive ? 'nav-link active_link' : 'nav-link';
 
 const Header = () => {
   return (
@@ -25,19 +27,19 @@ const Header = () => {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <Link to="/" class="nav-link" activeClassName="navactive">
+              <NavLink to="/" className={activeLink}>
                 Home
-              </Link>
+              </NavLink>
             </li>
             <li class="nav-item">
-              <Link to="/shops" class="nav-link" activeClassName="navactive">
+              <NavLink to="/shops" className={activeLink}>
                 Shops
-              </Link>
+              </NavLink>
             </li>
             <li class="nav-item">
-              <Link to="/seller" class="nav-link" activeClassName="navactive">
+              <NavLink to="/seller" className={activeLink}>
                 Sellers
-              </Link>
+              </NavLink>
             </li>
             <li class="nav-item">
               <Link class="nav-link" to="/">
