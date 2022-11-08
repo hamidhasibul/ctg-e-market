@@ -14,6 +14,10 @@ body {
   height: 100%;
 }
 
+.linkReset {
+  text-decoration: none;
+}
+
 .wrapper {
   min-height: 100vh;
   display: grid;
@@ -61,3 +65,12 @@ a {
 .social-links:hover {
   transform: scale(1.2);
 }
+
+.seller-image {
+  position: absolute;
+  height: 3rem;
+  top: 75%;
+  right: 5px;
+}
+
+/* Login Section */

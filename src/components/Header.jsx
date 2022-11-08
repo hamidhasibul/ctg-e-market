@@ -32,7 +32,7 @@ const Header = () => {
               </NavLink>
             </li>
             <li class="nav-item">
-              <NavLink to="/shops" className={activeLink}>
+              <NavLink to="/shop" className={activeLink}>
                 Shops
               </NavLink>
             </li>
@@ -42,9 +42,20 @@ const Header = () => {
               </NavLink>
             </li>
             <li class="nav-item">
-              <Link class="nav-link" to="/">
+              <Link class="nav-link" to="/cart">
                 <i class="fa-solid fa-cart-shopping"></i>
                 <span class="badge badge-light text-dark">0</span>
+              </Link>
+            </li>
+            <li class="nav-item">
+              <Link class="nav-link" to="/follow">
+                <i class="fa-solid fa-comments"></i>
+                <span class="badge badge-light text-dark">0</span>
+              </Link>
+            </li>
+            <li class="nav-item">
+              <Link class="nav-link" to="/account">
+                <i class="fa-solid fa-user"></i>
               </Link>
             </li>
           </ul>
@@ -58,7 +69,7 @@ const Header = () => {
             <button class="btn btn-outline-success" type="submit">
               Search
             </button>
-            <Link to="/" class="nav-link px-3">
+            <Link to="/login" class="nav-link px-3">
               Login
             </Link>
           </form>
