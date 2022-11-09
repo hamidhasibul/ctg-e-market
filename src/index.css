@@ -74,3 +74,32 @@ a {
 }
 
 /* Login Section */
+
+.seller-info-card {
+  width: 15rem;
+  height: 20rem !important;
+}
+
+.card-image-seller-ind {
+  height: 8rem;
+  object-fit: cover;
+}
+
+.product-seller-img {
+  border-radius: 50%;
+  width: 10%;
+  position: absolute;
+  top: 0;
+  right: 12px;
+}
+
+.cart-card {
+  width: 30%;
+}
+.my-product-card {
+  width: 33.33%;
+}
+
+.my-product-card-image {
+  height: 9rem;
+}

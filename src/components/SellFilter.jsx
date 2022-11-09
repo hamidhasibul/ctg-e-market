@@ -24,7 +24,7 @@ const SellFilter = () => {
               />
               <div class="card-body">
                 <h5 class="card-title">
-                  <Link to="/" className="product-link text-dark">
+                  <Link to="/seller/:id" className="product-link text-dark">
                     Lawrence Griffin
                   </Link>
                 </h5>
@@ -47,7 +47,7 @@ const SellFilter = () => {
               />
               <div class="card-body">
                 <h5 class="card-title">
-                  <Link to="/" className="product-link text-dark">
+                  <Link to="/seller/:id" className="product-link text-dark">
                     Tyler Dean
                   </Link>
                 </h5>
