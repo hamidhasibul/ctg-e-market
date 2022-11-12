@@ -1,21 +1,135 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { React, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import Password from './forms/Password';
 
 const AccountsUser = () => {
+  const navigate = useNavigate();
+
+  const userInfo = localStorage.getItem('userInfo')
+    ? JSON.parse(localStorage.getItem('userInfo'))
+    : null;
+
+  const [name, setName] = useState(userInfo.name);
+  const [email, setEmail] = useState(userInfo.email);
+  const [address, setAddress] = useState(userInfo.address);
+  const [phone, setPhone] = useState(userInfo.phone);
+
+  const [open, setOpen] = useState(false);
+
+  const [image, setImage] = useState(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [previewImage, setPreviewImage] = useState(false);
+
+  useEffect(() => {
+    if (!localStorage.getItem('userInfo')) {
+      localStorage.getItem('userInfo');
+      navigate('/');
+    }
+  });
+
+  const handlerUpdate = async (e) => {
+    e.preventDefault();
+
+    try {
+      const { data } = await axios.put('/api/users/update', {
+        _id: userInfo._id,
+        name,
+        email,
+        address,
+        phone,
+      });
+      localStorage.setItem('userInfo', JSON.stringify(data));
+      alert(`User Updated !!`);
+    } catch (error) {
+      alert('Account Update failed!');
+    }
+  };
+
+  const validateImage = async (e) => {
+    const file = e.target.files[0];
+    if (file.size >= 1048576) {
+      return alert('Max Size for Image is 1MB');
+    } else {
+      setImage(file);
+      setPreviewImage(URL.createObjectURL(file));
+    }
+  };
+
+  const uploadImage = async () => {
+    const data = new FormData();
+    data.append('file', image);
+    data.append('upload_preset', 'ctg-e-market');
+    try {
+      setUploadingImage(true);
+      let res = await fetch(
+        'https://api.cloudinary.com/v1_1/dpxmimqsi/image/upload',
+        {
+          method: 'post',
+          body: data,
+        }
+      );
+      const urlData = await res.json();
+      setUploadingImage(false);
+      return urlData.url;
+    } catch (error) {
+      setUploadingImage(false);
+      console.log(error);
+    }
+  };
+
+  const handlerUpdateImage = async (e) => {
+    e.preventDefault();
+
+    if (!image) {
+      return alert('Please select your Profile Image');
+    }
+
+    const url = await uploadImage(image);
+    console.log(url);
+
+    const { data } = await axios.put('/api/users/update', {
+      _id: userInfo._id,
+      image: url,
+    });
+    localStorage.setItem('userInfo', JSON.stringify(data));
+    alert('Profile Image updated successfully!');
+  };
+
   return (
     <>
       <div className="container-lg">
         <div className="row my-4">
           <h2 className="text-center mb-4">My Account</h2>
           <div className="col-lg-6">
-            <img
-              src="../assets/images/users/57.jpg"
-              alt=""
-              className="img-fluid mb-3"
-            />
-            <button className="btn btn-light ms-4">Change Image</button>
+            <form onSubmit={handlerUpdateImage} className="accImage">
+              <img
+                src={previewImage || userInfo.image}
+                alt=""
+                className="img-fluid mb-3 accImageStl"
+              />
 
-            <form>
+              {uploadingImage ? (
+                'Uploading....'
+              ) : (
+                <label htmlFor="image_upload" className="uploadIcon">
+                  <i class="fa-solid fa-circle-plus"></i>
+                </label>
+              )}
+
+              <input
+                type="file"
+                hidden
+                id="image_upload"
+                accept="image/png, image/jpeg"
+                onChange={validateImage}
+              />
+              <button className="btn btn-light ms-4">
+                {uploadingImage ? 'Uploading...' : 'Upload'}
+              </button>
+            </form>
+            {/* btn btn-light ms-4 */}
+            <form onSubmit={handlerUpdate}>
               <div class="mb-3">
                 <label for="fullnameInput" class="form-label">
                   Full Name
@@ -26,6 +140,8 @@ const AccountsUser = () => {
                   id="fullnameInput"
                   placeholder=""
                   required
+                  onChange={(e) => setName(e.target.value)}
+                  value={name}
                 />
               </div>
               <div class="mb-3">
@@ -38,6 +154,8 @@ const AccountsUser = () => {
                   id="emailInput"
                   placeholder="tyleremarket@gmail.com"
                   required
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
                 />
               </div>
               <div class="mb-3">
@@ -49,6 +167,8 @@ const AccountsUser = () => {
                   id="addressInput"
                   rows="2"
                   required
+                  onChange={(e) => setAddress(e.target.value)}
+                  value={address}
                 ></textarea>
               </div>
               <div class="mb-3">
@@ -60,12 +180,23 @@ const AccountsUser = () => {
                   class="form-control w-50"
                   id="phoneInput"
                   required
+                  onChange={(e) => setPhone(e.target.value)}
+                  value={phone}
                 />
+              </div>
+              <div className="mb-3">
+                <label
+                  className="form-label changePass"
+                  onClick={() => setOpen(true)}
+                >
+                  Change Password
+                </label>
               </div>
               <div className="mb-3">
                 <button className="btn btn-secondary w-50">Update</button>
               </div>
             </form>
+            {open && <Password setOpen={setOpen} />}
           </div>
           <div className="col-lg-6">
             <div className="account-group">

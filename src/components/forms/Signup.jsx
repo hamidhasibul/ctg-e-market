@@ -1,14 +1,49 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Signup = () => {
+  const navigate = useNavigate();
+
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [confirmPassword, setConfirmPassword] = useState();
+  const [address, setAddress] = useState();
+  const [phone, setPhone] = useState();
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+
+    if (password !== confirmPassword) {
+      alert('passwords do not match');
+      return;
+    }
+
+    try {
+      const { data } = await axios.post('/api/users/register', {
+        name,
+        email,
+        password,
+        address,
+        phone,
+      });
+      localStorage.setItem('userInfo', JSON.stringify(data));
+      alert(`You've successfully Registered!!`);
+      navigate('/');
+    } catch (error) {
+      alert('Registration Failed ! try again.');
+    }
+  };
+
   return (
     <>
       <div className="container-fluid">
         <div className="row">
           <div className="col-lg-6 mx-auto">
             <div className="signup-form mt-4">
-              <form action="">
+              <form onSubmit={submitHandler}>
                 <div class="mb-3">
                   <label for="fullnameInput" class="form-label">
                     Full Name
@@ -19,6 +54,7 @@ const Signup = () => {
                     id="fullnameInput"
                     placeholder="Enter Full Name...."
                     required
+                    onChange={(e) => setName(e.target.value)}
                   />
                 </div>
                 <div class="mb-3">
@@ -31,6 +67,7 @@ const Signup = () => {
                     id="emailInput"
                     placeholder="Email...."
                     required
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <div class="mb-3">
@@ -42,6 +79,7 @@ const Signup = () => {
                     class="form-control"
                     id="passwordInput"
                     required
+                    onChange={(e) => setPassword(e.target.value)}
                   ></input>
                 </div>
                 <div class="mb-3">
@@ -53,6 +91,7 @@ const Signup = () => {
                     class="form-control"
                     id="repasswordInput"
                     required
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                   ></input>
                 </div>
                 <div class="mb-3">
@@ -64,6 +103,7 @@ const Signup = () => {
                     id="addressInput"
                     rows="2"
                     required
+                    onChange={(e) => setAddress(e.target.value)}
                   ></textarea>
                 </div>
                 <div class="mb-3">
@@ -75,6 +115,7 @@ const Signup = () => {
                     class="form-control"
                     id="phoneInput"
                     required
+                    onChange={(e) => setPhone(e.target.value)}
                   />
                 </div>
                 <div className="mb-3">

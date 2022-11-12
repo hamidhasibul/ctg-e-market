@@ -103,3 +103,54 @@ a {
 .my-product-card-image {
   height: 9rem;
 }
+
+.logout {
+  cursor: pointer;
+}
+
+.changePass {
+  cursor: pointer;
+}
+
+.passwords {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  background-color: #0000001e;
+}
+
+.passwords form {
+  width: 400px;
+  background-color: #ffffff;
+  padding: 30px 10px;
+  border-radius: 10px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.close-btn {
+  cursor: pointer;
+}
+
+.accImage {
+  position: relative;
+}
+.uploadIcon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: large;
+  color: rgb(0, 27, 137);
+  cursor: pointer;
+}
+
+.accImageStl {
+  height: 6rem !important;
+}

@@ -1,11 +1,20 @@
 import React from 'react';
-
-import { Link, NavLink } from 'react-router-dom';
-
-const activeLink = ({ isActive }) =>
-  isActive ? 'nav-link active_link' : 'nav-link';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 
 const Header = () => {
+  const navigate = useNavigate();
+
+  const userInfo = localStorage.getItem('userInfo');
+
+  const signoutHandler = () => {
+    localStorage.removeItem('userInfo');
+    alert(`You've logged out!!`);
+    navigate('/login');
+  };
+
+  const activeLink = ({ isActive }) =>
+    isActive ? 'nav-link active_link' : 'nav-link';
+
   return (
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
       <div class="container-fluid">
@@ -69,9 +78,16 @@ const Header = () => {
             <button class="btn btn-outline-success" type="submit">
               Search
             </button>
-            <Link to="/login" class="nav-link px-3">
-              Login
-            </Link>
+
+            {userInfo ? (
+              <span class="nav-link px-3 logout" onClick={signoutHandler}>
+                Logout
+              </span>
+            ) : (
+              <Link to="/login" class="nav-link px-3">
+                Login
+              </Link>
+            )}
           </form>
         </div>
       </div>
