@@ -1,7 +1,27 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import axios from 'axios';
 
 const Latest = () => {
+  const [users, setUsers] = useState([]); //Default is empty
+  const [products, setProducts] = useState([]); //Default is empty
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios.get('/api/users/all');
+      console.log(result.data);
+      setUsers(result.data);
+
+      const res = await axios.get('/api/products/');
+      console.log(res.data);
+      setProducts(res.data);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <>
       <div className="container-fluid">
@@ -9,117 +29,38 @@ const Latest = () => {
           <div className="col-lg-12">
             <h2 className="text-center my-2">New Fresh Products</h2>
             <div className="latest-products d-flex flex-wrap justify-content-center">
-              <div class="card w-25 mx-2 mb-4">
-                <img
-                  src="./assets/images/charlesdeluvio-1-nx1QR5dTE-unsplash.jpg"
-                  class="card-img-top card-image"
-                  alt="..."
-                />
-                <Link to="/">
+              {products.slice(-3).map((product) => (
+                <div class="card w-25 mx-2 mb-4" key={product._id}>
                   <img
-                    src="./assets/images/users/28.jpg"
-                    alt=""
-                    className="seller-image"
+                    src={product.image}
+                    class="card-img-top card-image"
+                    alt={product.name}
                   />
-                </Link>
-                <div class="card-body">
-                  <h5 class="card-title">
-                    <Link to="/" className="product-link text-dark">
-                      Sunglass
-                    </Link>
-                  </h5>
-                  <p class="card-text">
-                    <span>Accessories</span>
-                    <br />
-                    <span>200 Taka</span>
-                    <br />
-                  </p>
+                  <Link to="/">
+                    <img
+                      src={product.sellerImage}
+                      alt=""
+                      className="seller-image"
+                    />
+                  </Link>
+                  <div class="card-body">
+                    <h5 class="card-title">
+                      <Link
+                        to={`${product.slug}`}
+                        className="product-link text-dark"
+                      >
+                        {product.name}
+                      </Link>
+                    </h5>
+                    <p class="card-text">
+                      <span>{product.category}</span>
+                      <br />
+                      <span>{product.price} Taka</span>
+                      <br />
+                    </p>
+                  </div>
                 </div>
-              </div>
-
-              <div class="card w-25 mx-2 mb-4">
-                <img
-                  src="./assets/images/nordwood-themes-_sg8nXmpWDM-unsplash.jpg"
-                  class="card-img-top card-image"
-                  alt="..."
-                />
-                <Link to="/">
-                  <img
-                    src="./assets/images/users/57.jpg"
-                    alt=""
-                    className="seller-image"
-                  />
-                </Link>
-                <div class="card-body">
-                  <h5 class="card-title">
-                    <Link to="/" className="product-link text-dark">
-                      Laptop
-                    </Link>
-                  </h5>
-                  <p class="card-text">
-                    <span>Electronics</span>
-                    <br />
-                    <span>200 Taka</span>
-                    <br />
-                  </p>
-                </div>
-              </div>
-
-              <div class="card w-25 mx-2 mb-4">
-                <img
-                  src="./assets/images/paolo-giubilato-ZwKCWVFdrcs-unsplash.jpg"
-                  class="card-img-top card-image"
-                  alt="..."
-                />
-                <Link to="/">
-                  <img
-                    src="./assets/images/users/57.jpg"
-                    alt=""
-                    className="seller-image"
-                  />
-                </Link>
-                <div class="card-body">
-                  <h5 class="card-title">
-                    <Link to="/" className="product-link text-dark">
-                      iPhone
-                    </Link>
-                  </h5>
-                  <p class="card-text">
-                    <span>Electronics</span>
-                    <br />
-                    <span>200 Taka</span>
-                    <br />
-                  </p>
-                </div>
-              </div>
-
-              <div class="card w-25 mx-2 mb-4">
-                <img
-                  src="./assets/images/yasin-hasan-_h50cvQCj_M-unsplash.jpg"
-                  class="card-img-top card-image"
-                  alt="..."
-                />
-                <Link to="/">
-                  <img
-                    src="./assets/images/users/57.jpg"
-                    alt=""
-                    className="seller-image"
-                  />
-                </Link>
-                <div class="card-body">
-                  <h5 class="card-title">
-                    <Link to="/" className="product-link text-dark">
-                      TWS Earbuds
-                    </Link>
-                  </h5>
-                  <p class="card-text">
-                    <span>Electronics</span>
-                    <br />
-                    <span>200 Taka</span>
-                    <br />
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
@@ -127,51 +68,35 @@ const Latest = () => {
           <div className="col-lg-12">
             <h2 className="text-center py-2">Registered Sellers</h2>
             <div className="sellers-section d-flex flex-wrap justify-content-center">
-              <div class="card mb-4 w-25 mx-2">
-                <img
-                  src="./assets/images/users/28.jpg"
-                  class="card-img-top card-image-user"
-                  alt="..."
-                />
-                <div class="card-body">
-                  <h5 class="card-title">
-                    <Link to="/" className="product-link text-dark">
-                      Lawrence Griffin
-                    </Link>
-                  </h5>
-                  <p class="card-text">
-                    <span>
-                      <button className="btn btn-success btn-sm">Follow</button>
-                    </span>
-                    <br />
-                    <span>Member Since : 8/11/2022</span>
-                    <br />
-                  </p>
+              {users.slice(-5).map((user) => (
+                <div class="card mb-4 w-25 mx-2" key={user._id}>
+                  <img
+                    src={user.image}
+                    class="card-img-top card-image-user"
+                    alt={user.name}
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title">
+                      <Link
+                        to={`seller/${user._id}`}
+                        className="product-link text-dark"
+                      >
+                        {user.name}
+                      </Link>
+                    </h5>
+                    <p class="card-text">
+                      <span>
+                        <button className="btn btn-success btn-sm">
+                          Follow
+                        </button>
+                      </span>
+                      <br />
+                      <span>Member Since : {user.createdAt.slice(0, 10)}</span>
+                      <br />
+                    </p>
+                  </div>
                 </div>
-              </div>
-
-              <div class="card mb-4 w-25 mx-2">
-                <img
-                  src="./assets/images/users/57.jpg"
-                  class="card-img-top card-image-user"
-                  alt="..."
-                />
-                <div class="card-body">
-                  <h5 class="card-title">
-                    <Link to="/" className="product-link text-dark">
-                      Tyler Dean
-                    </Link>
-                  </h5>
-                  <p class="card-text">
-                    <span>
-                      <button className="btn btn-success btn-sm">Follow</button>
-                    </span>
-                    <br />
-                    <span>Member Since : 6/11/2022</span>
-                    <br />
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>

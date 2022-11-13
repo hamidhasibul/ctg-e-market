@@ -1,7 +1,27 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+
+import { Link, useParams } from 'react-router-dom';
 
 const SellerInfo = () => {
+  const [seller, setSeller] = useState([]);
+
+  const params = useParams();
+  const { id } = params;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await axios.get(`/api/users/user/${id}`);
+        console.log(result.data);
+        setSeller(result.data);
+      } catch (err) {
+        console.log('Error!');
+      }
+    };
+    fetchData();
+  }, [id]);
+
   return (
     <>
       <div className="container-lg">
@@ -11,22 +31,24 @@ const SellerInfo = () => {
             <div className="seller-info">
               <div className="seller-info-header text-center">
                 <img
-                  src="../assets/images/users/57.jpg"
-                  alt=""
-                  className="img-fluid mb-4 "
+                  src={seller.image}
+                  alt={seller.name}
+                  className="img-fluid mb-4 seller-info-img"
                 />
               </div>
               <div className="seller-info-body text-center">
-                <p className="mb-1  fw-bold">Tyler Dean</p>
-                <p className="mb-1 ">Halishahar, Chittagong.</p>
-                <p className="mb-1 ">tyleremarket@gmail.com</p>
-                <p className="mb-1 ">+880121212121</p>
+                <p className="mb-1  fw-bold">{seller.name}</p>
+                <p className="mb-1 ">{seller.address}</p>
+                <p className="mb-1 ">{seller.email}</p>
+                <p className="mb-1 ">{seller.phone}</p>
                 <button className="btn btn-success btn-sm mt-4">Follow</button>
               </div>
             </div>
           </div>
           <div className="col-lg-6">
-            <h2 className="text-center mb-5">All Products from this seller</h2>
+            <h2 className="text-center mb-5">
+              All Products from {seller.name}
+            </h2>
             <div className="seller-products">
               <div className="filter-cards">
                 <div className="d-flex flex-wrap justify-content-center mb-4">
