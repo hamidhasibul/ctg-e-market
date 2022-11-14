@@ -26,7 +26,7 @@ const ProductDetails = () => {
         <div className="row my-5">
           <div className="col-lg-6 position-relative">
             <img src={product.image} alt={product.name} className="img-fluid" />
-            <Link to={`../${product._id}`}>
+            <Link to={`../seller/${product.sellerId}`}>
               <img
                 src={product.sellerImage}
                 alt={product.seller}

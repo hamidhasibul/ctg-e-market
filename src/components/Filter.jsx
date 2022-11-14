@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import FilterProduct from './FilterProduct';
 
 // const pagiActive = ({ isActive }) => (isActive ? 'page-link' : 'page-link');
 
 const Filter = () => {
   const [products, setProducts] = useState([]);
+  const [category, setCategory] = useState([]);
   const [query, setQuery] = useState('');
 
   useEffect(() => {
@@ -14,10 +14,21 @@ const Filter = () => {
       const result = await axios.get('/api/products');
       console.log(result.data);
       setProducts(result.data);
+
+      const res = await axios.get('/api/category');
+      console.log(res.data);
+      setCategory(res.data);
     };
 
     fetchData();
   }, []);
+
+  const filterResult = (catItem) => {
+    const catResult = products.filter((curCat) => {
+      return curCat.category === catItem;
+    });
+    setProducts(catResult);
+  };
 
   const keys = ['name', 'seller'];
 
@@ -27,6 +38,13 @@ const Filter = () => {
     );
   };
 
+  const handleReset = async (e) => {
+    e.preventDefault();
+    const result = await axios.get('/api/products');
+    console.log(result.data);
+    setProducts(result.data);
+  };
+
   return (
     <>
       <div className="container-fluid">
@@ -34,13 +52,21 @@ const Filter = () => {
           <div className="col-lg-8 mx-auto">
             <div className="row my-4">
               <div className="col-lg-6 d-flex justify-content-evenly">
-                <button className="btn btn-sm btn-secondary">All</button>
-                <button className="btn btn-sm btn-secondary">
-                  Accessories
+                <button
+                  className="btn btn-sm btn-secondary"
+                  onClick={handleReset}
+                >
+                  All
                 </button>
-                <button className="btn btn-sm btn-secondary">
-                  Electronics
-                </button>
+                {category.map((cat) => (
+                  <button
+                    className="btn btn-sm btn-secondary"
+                    key={cat._id}
+                    onClick={() => filterResult(cat.name)}
+                  >
+                    {cat.name}
+                  </button>
+                ))}
               </div>
               <div className="col-lg-6">
                 <input

@@ -2,33 +2,31 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 
-const FilterProduct = ({ products }) => {
+const SellerProduct = ({ product }) => {
   const [pageNumber, setPageNumber] = useState(0);
-  const productsPerPage = 10;
+  const productsPerPage = 1;
   const pagesVisited = pageNumber * productsPerPage;
 
-  const displayProducts = products
+  const displayProducts = product
     .slice(pagesVisited, pagesVisited + productsPerPage)
-    .map((product) => (
-      <div class="card mx-2 mb-4 w-25" key={product._id}>
+    .map((pro) => (
+      <div class="card mx-2 mb-4 seller-info-card">
         <img
-          src={product.image}
-          class="card-img-top card-image"
-          alt={product.name}
+          src={pro.image}
+          class="card-img-top card-image card-image-seller-ind"
+          alt={pro.name}
         />
-        <Link to={`../seller/${product.sellerId}`}>
-          <img src={product.sellerImage} alt="" className="seller-image" />
-        </Link>
+
         <div class="card-body">
           <h5 class="card-title">
-            <Link to={`../${product.slug}`} className="product-link text-dark">
-              {product.name}
+            <Link to={`../${pro.slug}`} className="product-link text-dark">
+              {pro.name}
             </Link>
           </h5>
           <p class="card-text ">
-            <span>{product.category}</span>
+            <span>{pro.category}</span>
             <br />
-            <span>{product.price} Taka</span>
+            <span>{pro.price} Taka</span>
             <br />
             <button className="btn btn-primary btn-sm mx-auto mt-3">
               Add to Cart
@@ -38,12 +36,11 @@ const FilterProduct = ({ products }) => {
       </div>
     ));
 
-  const pageCount = Math.ceil(products.length / productsPerPage);
+  const pageCount = Math.ceil(product.length / productsPerPage);
 
   const handlerPageClick = ({ selected }) => {
     setPageNumber(selected);
   };
-
   return (
     <>
       <div className="filter-cards">
@@ -76,4 +73,4 @@ const FilterProduct = ({ products }) => {
   );
 };
 
-export default FilterProduct;
+export default SellerProduct;

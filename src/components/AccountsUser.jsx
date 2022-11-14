@@ -2,6 +2,8 @@ import { React, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Password from './forms/Password';
+import UserProduct from './UserProduct';
+import AddProduct from './AddProduct';
 
 const AccountsUser = () => {
   const navigate = useNavigate();
@@ -16,17 +18,34 @@ const AccountsUser = () => {
   const [phone, setPhone] = useState(userInfo.phone);
 
   const [open, setOpen] = useState(false);
+  const [openAdd, setOpenAdd] = useState(false);
 
   const [image, setImage] = useState(null);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [previewImage, setPreviewImage] = useState(false);
+
+  const [product, setProduct] = useState([]);
+
+  const id = userInfo._id;
 
   useEffect(() => {
     if (!localStorage.getItem('userInfo')) {
       localStorage.getItem('userInfo');
       navigate('/');
     }
-  });
+
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`/api/products/seller/${id}`);
+        console.log(res.data);
+        setProduct(res.data);
+      } catch (err) {
+        console.log('Error!');
+      }
+    };
+
+    fetchData();
+  }, [navigate, id]);
 
   const handlerUpdate = async (e) => {
     e.preventDefault();
@@ -201,81 +220,15 @@ const AccountsUser = () => {
           <div className="col-lg-6">
             <div className="account-group">
               <h5 className="mb-4 text-center">My Products</h5>
+
+              <button
+                className="btn btn-secondary mb-5 "
+                onClick={() => setOpenAdd(true)}
+              >
+                Add Product
+              </button>
               <div className="account-products">
-                <div className="d-flex flex-wrap  mb-4">
-                  <div class="card mx-2 mb-4 my-product-card">
-                    <img
-                      src="./assets/images/charlesdeluvio-1-nx1QR5dTE-unsplash.jpg"
-                      class="card-img-top my-product-card-image"
-                      alt="..."
-                    />
-
-                    <div class="card-body">
-                      <h5 class="card-title">
-                        <Link to="/" className="product-link text-dark">
-                          Sunglass
-                        </Link>
-                      </h5>
-                      <p class="card-text ">
-                        <span>Accessories</span>
-                        <br />
-                        <span>200 Taka</span>
-                        <br />
-                        <button className="btn btn-success btn-sm mx-auto mt-3 w-50">
-                          Edit
-                        </button>
-                        <button className="btn btn-danger btn-sm mx-auto mt-3 w-50">
-                          Delete
-                        </button>
-                      </p>
-                    </div>
-                  </div>
-                  <div class="card mx-2 mb-4 my-product-card">
-                    <img
-                      src="./assets/images/nordwood-themes-_sg8nXmpWDM-unsplash.jpg"
-                      class="card-img-top my-product-card-image "
-                      alt="..."
-                    />
-
-                    <div class="card-body">
-                      <h5 class="card-title">
-                        <Link to="/" className="product-link text-dark">
-                          Laptop
-                        </Link>
-                      </h5>
-                      <p class="card-text">
-                        <span>Electronics</span>
-                        <br />
-                        <span>200 Taka</span>
-                        <br />
-                        <button className="btn btn-success btn-sm mx-auto mt-3 w-50">
-                          Edit
-                        </button>
-                        <button className="btn btn-danger btn-sm mx-auto mt-3 w-50">
-                          Delete
-                        </button>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                {/* Pagination */}
-                <ul class="pagination d-flex justify-content-center">
-                  <li class="page-item">
-                    <Link to="#" class="page-link " aria-label="Previous">
-                      <span aria-hidden="true">&laquo;</span>
-                    </Link>
-                  </li>
-                  <li class="page-item">
-                    <Link to="#" className="page-link">
-                      1
-                    </Link>
-                  </li>
-                  <li class="page-item">
-                    <Link to="#" class="page-link" aria-label="Next">
-                      <span aria-hidden="true">&raquo;</span>
-                    </Link>
-                  </li>
-                </ul>
+                <UserProduct product={product} />
               </div>
               <h5 className="mb-4 text-center">My Orders</h5>
               <div className="account-orders text-center">
@@ -323,6 +276,7 @@ const AccountsUser = () => {
                 </li>
               </ul>
             </div>
+            {openAdd && <AddProduct setOpenAdd={setOpenAdd} />}
           </div>
         </div>
       </div>
