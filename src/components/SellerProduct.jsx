@@ -4,7 +4,7 @@ import ReactPaginate from 'react-paginate';
 
 const SellerProduct = ({ product }) => {
   const [pageNumber, setPageNumber] = useState(0);
-  const productsPerPage = 1;
+  const productsPerPage = 12;
   const pagesVisited = pageNumber * productsPerPage;
 
   const displayProducts = product
@@ -16,7 +16,6 @@ const SellerProduct = ({ product }) => {
           class="card-img-top card-image card-image-seller-ind"
           alt={pro.name}
         />
-
         <div class="card-body">
           <h5 class="card-title">
             <Link to={`../${pro.slug}`} className="product-link text-dark">

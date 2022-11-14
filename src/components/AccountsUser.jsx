@@ -12,10 +12,10 @@ const AccountsUser = () => {
     ? JSON.parse(localStorage.getItem('userInfo'))
     : null;
 
-  const [name, setName] = useState(userInfo.name);
-  const [email, setEmail] = useState(userInfo.email);
-  const [address, setAddress] = useState(userInfo.address);
-  const [phone, setPhone] = useState(userInfo.phone);
+  const [name, setName] = useState(userInfo && userInfo.name);
+  const [email, setEmail] = useState(userInfo && userInfo.email);
+  const [address, setAddress] = useState(userInfo && userInfo.address);
+  const [phone, setPhone] = useState(userInfo && userInfo.phone);
 
   const [open, setOpen] = useState(false);
   const [openAdd, setOpenAdd] = useState(false);
@@ -26,7 +26,7 @@ const AccountsUser = () => {
 
   const [product, setProduct] = useState([]);
 
-  const id = userInfo._id;
+  const id = userInfo && userInfo._id;
 
   useEffect(() => {
     if (!localStorage.getItem('userInfo')) {
@@ -123,7 +123,7 @@ const AccountsUser = () => {
           <div className="col-lg-6">
             <form onSubmit={handlerUpdateImage} className="accImage">
               <img
-                src={previewImage || userInfo.image}
+                src={previewImage || (userInfo && userInfo.image)}
                 alt=""
                 className="img-fluid mb-3 accImageStl"
               />

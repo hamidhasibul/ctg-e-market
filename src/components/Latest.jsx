@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 
+import LatestSeller from './LatestSeller';
+
 const Latest = () => {
   const [users, setUsers] = useState([]); //Default is empty
   const [products, setProducts] = useState([]); //Default is empty
@@ -69,33 +71,7 @@ const Latest = () => {
             <h2 className="text-center py-2">Registered Sellers</h2>
             <div className="sellers-section d-flex flex-wrap justify-content-center">
               {users.slice(-5).map((user) => (
-                <div class="card mb-4 w-25 mx-2" key={user._id}>
-                  <img
-                    src={user.image}
-                    class="card-img-top card-image-user"
-                    alt={user.name}
-                  />
-                  <div class="card-body">
-                    <h5 class="card-title">
-                      <Link
-                        to={`seller/${user._id}`}
-                        className="product-link text-dark"
-                      >
-                        {user.name}
-                      </Link>
-                    </h5>
-                    <p class="card-text">
-                      <span>
-                        <button className="btn btn-success btn-sm">
-                          Follow
-                        </button>
-                      </span>
-                      <br />
-                      <span>Member Since : {user.createdAt.slice(0, 10)}</span>
-                      <br />
-                    </p>
-                  </div>
-                </div>
+                <LatestSeller key={user._id} user={user} />
               ))}
             </div>
           </div>

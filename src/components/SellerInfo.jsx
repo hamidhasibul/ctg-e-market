@@ -1,15 +1,20 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
+import { Store } from '../Store';
 import SellerProduct from './SellerProduct';
 
 const SellerInfo = () => {
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { cart, wish } = state;
   const [seller, setSeller] = useState([]);
   const [product, setProduct] = useState([]);
 
   const params = useParams();
   const { id } = params;
+
+  const existUser = localStorage.getItem('userInfo');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,6 +32,35 @@ const SellerInfo = () => {
     };
     fetchData();
   }, [id]);
+
+  const handlerFollow = () => {
+    if (!existUser) {
+      window.alert('Sorry. You must login.');
+    } else {
+      //If there is a user I am already following (localstorage), his id, from db
+      const existItem = wish.wishItems.find((x) => x._id === seller._id);
+      const quantity = existItem ? existItem.quantity : 1;
+
+      if (existItem) {
+        window.alert('Sorry. You are already following this user.');
+        return;
+      }
+
+      ctxDispatch({
+        type: 'WISH_ADD_ITEM',
+        payload: { ...seller, quantity },
+      });
+    }
+  };
+
+  const handlerUnfollow = (seller) => {
+    ctxDispatch({
+      type: 'WISH_REMOVE_ITEM',
+      payload: seller,
+    });
+  };
+
+  const sellerExists = wish.wishItems.find((x) => x._id === seller._id);
 
   return (
     <>
@@ -47,7 +81,23 @@ const SellerInfo = () => {
                 <p className="mb-1 ">{seller.address}</p>
                 <p className="mb-1 ">{seller.email}</p>
                 <p className="mb-1 ">{seller.phone}</p>
-                <button className="btn btn-success btn-sm mt-4">Follow</button>
+
+                {existUser && sellerExists ? (
+                  <span
+                    key={seller._id}
+                    onClick={() => handlerUnfollow(seller)}
+                    className="btn btn-danger btn-sm mt-4"
+                  >
+                    Unfollow
+                  </span>
+                ) : (
+                  <span
+                    onClick={handlerFollow}
+                    className="btn btn-success btn-sm mt-4"
+                  >
+                    Follow
+                  </span>
+                )}
               </div>
             </div>
           </div>
