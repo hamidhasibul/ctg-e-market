@@ -1,7 +1,53 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Store } from '../Store';
+import Checkout from './Checkout';
 
 const CartItems = () => {
+  const navigate = useNavigate();
+
+  const [openCheckout, setOpenCheckout] = useState(false);
+
+  useEffect(() => {
+    if (!localStorage.getItem('userInfo')) {
+      localStorage.getItem('userInfo');
+      navigate('/');
+    }
+  });
+
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+
+  const {
+    cart: { cartItems },
+  } = state;
+
+  const idSeller = cartItems.map((sellId) => sellId.sellerId);
+
+  //console.log(idSeller);
+
+  const totalItems = cartItems.reduce((a, c) => a + c.quantity, 0) + '/ Items ';
+
+  const roundPrice = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
+  const itemsPrice = roundPrice(
+    cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
+  );
+  const taxPrice = roundPrice(0.2 * itemsPrice); //for tax in Serbia 20%
+  const totalPrice = itemsPrice + taxPrice;
+
+  const updateQuantityHandler = async (item, quantity) => {
+    ctxDispatch({
+      type: 'CART_ADD_ITEM',
+      payload: { ...item, quantity },
+    });
+  };
+
+  const removeProduct = (item) => {
+    ctxDispatch({
+      type: 'CART_REMOVE_ITEM',
+      payload: item,
+    });
+  };
+
   return (
     <>
       <div class="container-lg">
@@ -11,87 +57,136 @@ const CartItems = () => {
             <div className="cart-items">
               <div className="row">
                 <div className="col-lg-8">
-                  <div className="cart-cards d-flex flex-wrap">
-                    <div class="card mx-2 mb-4 cart-card">
-                      <img
-                        src="./assets/images/charlesdeluvio-1-nx1QR5dTE-unsplash.jpg"
-                        class="card-img-top"
-                        alt="..."
-                      />
-                      <Link to="/">
-                        <img
-                          src="./assets/images/users/28.jpg"
-                          alt=""
-                          className="seller-image"
-                        />
-                      </Link>
-                      <div class="card-body">
-                        <h5 class="card-title">
-                          <Link to="/" className="product-link text-dark">
-                            Sunglass
+                  {cartItems.length === 0 ? (
+                    <h3 className="text-center">Your Bag is empty!</h3>
+                  ) : (
+                    <div className="cart-cards d-flex flex-wrap">
+                      {cartItems.map((item) => (
+                        <div class="card mx-2 mb-4 cart-card" key={item._id}>
+                          <img
+                            src={item.image}
+                            class="card-img-top"
+                            alt={item.name}
+                          />
+                          <Link to={`../seller/${item.sellerId}`}>
+                            <img
+                              src="./assets/images/users/28.jpg"
+                              alt=""
+                              className="seller-image"
+                            />
                           </Link>
-                        </h5>
-                        <p class="card-text ">
-                          <span>Accessories</span>
-                          <br />
-                          <span>200 Taka</span>
-                          <br />
-                          <div className="card-action my-2">
-                            <button className="btn btn-light">
-                              <i class="fa-solid fa-minus"></i>
-                            </button>
-                            <span className="mx-2">1</span>
-                            <button className="btn btn-light">
-                              <i class="fa-solid fa-plus"></i>
-                            </button>
+                          <div class="card-body">
+                            <h5 class="card-title">
+                              <Link
+                                to={`../${item.slug}`}
+                                className="product-link text-dark"
+                              >
+                                {item.name}
+                              </Link>
+                            </h5>
+                            <p class="card-text ">
+                              <span>{item.category}</span>
+                              <br />
+                              <span>{Number(item.price).toFixed(2)} Taka</span>
+                              <br />
+                              <div className="card-action my-2">
+                                <button
+                                  onClick={() =>
+                                    updateQuantityHandler(
+                                      item,
+                                      item.quantity - 1
+                                    )
+                                  }
+                                  disabled={item.quantity === 1}
+                                  className="btn btn-light"
+                                >
+                                  <i class="fa-solid fa-minus"></i>
+                                </button>
+                                <span className="mx-2">{item.quantity}</span>
+                                <button
+                                  onClick={() =>
+                                    updateQuantityHandler(
+                                      item,
+                                      item.quantity + 1
+                                    )
+                                  }
+                                  className="btn btn-light"
+                                >
+                                  <i class="fa-solid fa-plus"></i>
+                                </button>
+                              </div>
+                              <button
+                                onClick={() => removeProduct(item)}
+                                className="btn btn-primary btn-sm mx-auto mt-3"
+                              >
+                                Remove
+                              </button>
+                            </p>
                           </div>
-                          <button className="btn btn-primary btn-sm mx-auto mt-3">
-                            Remove
-                          </button>
-                        </p>
-                      </div>
+                        </div>
+                      ))}
                     </div>
-                  </div>
+                  )}
                 </div>
                 <div className="col-lg-4">
                   <div className="cart-bill bg-light p-4 border border-dark">
                     <h4 className="text-center mb-5">My Bill</h4>
-                    <div className="bill-groups mb-3">
-                      <div className="bil-group ">
-                        <p className="mb-1 d-flex justify-content-between">
-                          Sunglass <span>200 Taka</span>
-                        </p>
+                    {cartItems.length === 0 ? (
+                      <h3 className="info">No Products!</h3>
+                    ) : (
+                      <div className="bill-groups mb-3">
+                        {cartItems.map((product) => (
+                          <div className="bil-group ">
+                            <p className="mb-1 d-flex justify-content-between">
+                              {product.name} <span>{product.price} Taka</span>
+                            </p>
+                          </div>
+                        ))}
                       </div>
-                      <div className="bil-group">
-                        <p className="mb-1 d-flex justify-content-between">
-                          Sunglass <span>200 Taka</span>
-                        </p>
-                      </div>
-                    </div>
+                    )}
+
                     <div className="bill-total mb-4">
                       <div className="bill-group">
                         <p className="mb-1 d-flex justify-content-between">
-                          Sub-Total : <span>120.00 Taka</span>
+                          Sub-Total :{' '}
+                          <span>
+                            {totalItems} {itemsPrice} Taka
+                          </span>
                         </p>
                       </div>
                       <div className="bill-group">
                         <p className="mb-1 d-flex justify-content-between">
-                          Tax 20% : <span>30.00 Taka</span>
+                          Tax 20% : <span>{taxPrice} Taka</span>
                         </p>
                       </div>
                       <div className="bill-group">
                         <p className="mb-1 fw-bold d-flex justify-content-between">
-                          Total : <span>150.00 Taka</span>
+                          Total : <span>{totalPrice.toFixed(2)} Taka</span>
                         </p>
                       </div>
                     </div>
-                    <button className="btn btn-secondary">Checkout</button>
+                    <button
+                      onClick={() => setOpenCheckout(true)}
+                      className="btn btn-secondary"
+                    >
+                      Checkout
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        {openCheckout && (
+          <Checkout
+            cartItems={cartItems}
+            idSeller={idSeller}
+            itemsPrice={itemsPrice}
+            taxPrice={taxPrice}
+            totalPrice={totalPrice}
+            setOpenCheckout={setOpenCheckout}
+          />
+        )}
       </div>
     </>
   );

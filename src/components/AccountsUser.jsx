@@ -228,7 +228,11 @@ const AccountsUser = () => {
                 Add Product
               </button>
               <div className="account-products">
-                <UserProduct product={product} />
+                {product.length === 0 ? (
+                  <h4 className="text-center mb-4">No products added</h4>
+                ) : (
+                  <UserProduct product={product} />
+                )}
               </div>
               <h5 className="mb-4 text-center">My Orders</h5>
               <div className="account-orders text-center">

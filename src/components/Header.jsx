@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Store } from '../Store';
 
 const Header = () => {
   const navigate = useNavigate();
 
   const userInfo = localStorage.getItem('userInfo');
+
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { cart, wish } = state;
 
   const signoutHandler = () => {
     localStorage.removeItem('userInfo');
@@ -53,20 +57,36 @@ const Header = () => {
             <li class="nav-item">
               <Link class="nav-link" to="/cart">
                 <i class="fa-solid fa-cart-shopping"></i>
-                <span class="badge badge-light text-dark">0</span>
+                {cart.cartItems.length ? (
+                  <span className="badge badge-light text-dark">
+                    {cart.cartItems.length}
+                  </span>
+                ) : (
+                  <span class="badge badge-light text-dark">0</span>
+                )}
               </Link>
             </li>
-            <li class="nav-item">
-              <Link class="nav-link" to="/follow">
-                <i class="fa-solid fa-comments"></i>
-                <span class="badge badge-light text-dark">0</span>
-              </Link>
-            </li>
-            <li class="nav-item">
-              <Link class="nav-link" to="/account">
-                <i class="fa-solid fa-user"></i>
-              </Link>
-            </li>
+            {userInfo && (
+              <>
+                <li class="nav-item">
+                  <Link class="nav-link" to="/follow">
+                    <i class="fa-solid fa-comments"></i>
+                    {wish.wishItems.length ? (
+                      <span class="badge badge-light text-dark">
+                        {wish.wishItems.length}
+                      </span>
+                    ) : (
+                      <span class="badge badge-light text-dark">0</span>
+                    )}
+                  </Link>
+                </li>
+                <li class="nav-item">
+                  <Link class="nav-link" to="/account">
+                    <i class="fa-solid fa-user"></i>
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
           <form class="d-flex">
             <input

@@ -20,7 +20,7 @@ const UserProduct = ({ product }) => {
         {product
           .slice(pagesVisited, pagesVisited + productsPerPage)
           .map((pro) => (
-            <ProductItem pro={pro} />
+            <ProductItem key={pro._id} pro={pro} />
           ))}{' '}
       </div>
       {/* Pagination */}

@@ -1,8 +1,14 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { Store } from '../Store';
 
 const ProductDetails = () => {
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { cart } = state;
+
+  const existUser = localStorage.getItem('userInfo');
+
   const [product, setProduct] = useState([]);
   const params = useParams();
   const { slug } = params;
@@ -19,6 +25,20 @@ const ProductDetails = () => {
     };
     fetchData();
   }, [slug]);
+
+  const addToCart = () => {
+    if (!existUser) {
+      window.alert('Sorry. You must login.');
+    } else {
+      const existItem = cart.cartItems.find((x) => x._id === product._id);
+      const quantity = existItem ? existItem.quantity + 1 : 1; // if exists in cart than quantity + 1, if not than 1
+
+      ctxDispatch({
+        type: 'CART_ADD_ITEM',
+        payload: { ...product, quantity },
+      });
+    }
+  };
 
   return (
     <>
@@ -44,7 +64,9 @@ const ProductDetails = () => {
                 Price: {Number(product.price).toFixed(2)} taka
               </p>
               <p className="product-description mb-5">{product.description}</p>
-              <button className="btn btn-primary">Add to Cart</button>
+              <button onClick={addToCart} className="btn btn-primary">
+                Add to Cart
+              </button>
             </div>
           </div>
         </div>

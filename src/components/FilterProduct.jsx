@@ -1,42 +1,13 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+
 import ReactPaginate from 'react-paginate';
+
+import FilterProductInfo from './FilterProductInfo';
 
 const FilterProduct = ({ products }) => {
   const [pageNumber, setPageNumber] = useState(0);
   const productsPerPage = 10;
   const pagesVisited = pageNumber * productsPerPage;
-
-  const displayProducts = products
-    .slice(pagesVisited, pagesVisited + productsPerPage)
-    .map((product) => (
-      <div class="card mx-2 mb-4 w-25" key={product._id}>
-        <img
-          src={product.image}
-          class="card-img-top card-image"
-          alt={product.name}
-        />
-        <Link to={`../seller/${product.sellerId}`}>
-          <img src={product.sellerImage} alt="" className="seller-image" />
-        </Link>
-        <div class="card-body">
-          <h5 class="card-title">
-            <Link to={`../${product.slug}`} className="product-link text-dark">
-              {product.name}
-            </Link>
-          </h5>
-          <p class="card-text ">
-            <span>{product.category}</span>
-            <br />
-            <span>{product.price} Taka</span>
-            <br />
-            <button className="btn btn-primary btn-sm mx-auto mt-3">
-              Add to Cart
-            </button>
-          </p>
-        </div>
-      </div>
-    ));
 
   const pageCount = Math.ceil(products.length / productsPerPage);
 
@@ -48,7 +19,11 @@ const FilterProduct = ({ products }) => {
     <>
       <div className="filter-cards">
         <div className="d-flex flex-wrap justify-content-center mb-4">
-          {displayProducts}
+          {products
+            .slice(pagesVisited, pagesVisited + productsPerPage)
+            .map((product) => (
+              <FilterProductInfo key={product._id} product={product} />
+            ))}
         </div>
         {/* Pagination */}
         <ReactPaginate
