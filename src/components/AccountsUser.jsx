@@ -1,9 +1,11 @@
 import { React, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Password from './forms/Password';
 import UserProduct from './UserProduct';
 import AddProduct from './AddProduct';
+import Orders from './Orders';
+import AccountUserInfo from './AccountUserInfo';
 
 const AccountsUser = () => {
   const navigate = useNavigate();
@@ -25,6 +27,7 @@ const AccountsUser = () => {
   const [previewImage, setPreviewImage] = useState(false);
 
   const [product, setProduct] = useState([]);
+  const [orders, setOrders] = useState([]);
 
   const id = userInfo && userInfo._id;
 
@@ -39,6 +42,10 @@ const AccountsUser = () => {
         const res = await axios.get(`/api/products/seller/${id}`);
         console.log(res.data);
         setProduct(res.data);
+
+        const result = await axios.get(`/api/orders/mine/${id}`);
+        console.log(result.data);
+        setOrders(result.data);
       } catch (err) {
         console.log('Error!');
       }
@@ -216,6 +223,9 @@ const AccountsUser = () => {
               </div>
             </form>
             {open && <Password setOpen={setOpen} />}
+            <div className="account-info">
+              <AccountUserInfo />
+            </div>
           </div>
           <div className="col-lg-6">
             <div className="account-group">
@@ -236,33 +246,15 @@ const AccountsUser = () => {
               </div>
               <h5 className="mb-4 text-center">My Orders</h5>
               <div className="account-orders text-center">
-                <h6>
-                  Order no : 123456789{' '}
-                  <Link to="/" className="linkReset">
-                    <i class="fa-solid fa-eye text-dark"></i>
-                  </Link>
-                </h6>
-                <h6>
-                  Order no : 123456789{' '}
-                  <Link to="/" className="linkReset">
-                    <i class="fa-solid fa-eye text-dark"></i>
-                  </Link>
-                </h6>
-                <h6>
-                  Order no : 123456789{' '}
-                  <Link to="/" className="linkReset">
-                    <i class="fa-solid fa-eye text-dark"></i>
-                  </Link>
-                </h6>
-                <h6>
-                  Order no : 123456789{' '}
-                  <Link to="/" className="linkReset">
-                    <i class="fa-solid fa-eye text-dark"></i>
-                  </Link>
-                </h6>
+                {orders.length === 0 ? (
+                  <h3 className="info">You currently have no orders!</h3>
+                ) : (
+                  <Orders orders={orders} />
+                )}
               </div>
               {/* Pagination */}
-              <ul class="pagination d-flex justify-content-center">
+
+              {/* <ul class="pagination d-flex justify-content-center">
                 <li class="page-item">
                   <Link to="#" class="page-link " aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
@@ -278,9 +270,17 @@ const AccountsUser = () => {
                     <span aria-hidden="true">&raquo;</span>
                   </Link>
                 </li>
-              </ul>
+              </ul> */}
             </div>
             {openAdd && <AddProduct setOpenAdd={setOpenAdd} />}
+            {/* <h2 className="text-center">My Orders</h2>
+            <div className="account-orders">
+              {orders.length === 0 ? (
+                <h3 className="text-center">You currently have no orders!</h3>
+              ) : (
+                <Orders orders={orders} />
+              )}
+            </div> */}
           </div>
         </div>
       </div>

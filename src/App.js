@@ -11,6 +11,9 @@ import Product from './pages/product/Product';
 import Follow from './pages/follow/Follow';
 import Cart from './pages/cart/Cart';
 import Account from './pages/account/Account';
+import Order from './components/Order';
+
+import UserInfoOrder from './components/UserInfoOrder';
 
 function App() {
   return (
@@ -27,6 +30,8 @@ function App() {
           <Route path="/follow" element={<Follow />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/account" element={<Account />} />
+          <Route path="/order/:id" element={<Order />} />
+          <Route path="/userorder/:id" element={<UserInfoOrder />} />
         </Routes>
       </Router>
     </>
