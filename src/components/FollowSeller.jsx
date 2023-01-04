@@ -13,6 +13,8 @@ const FollowSeller = () => {
     wish: { wishItems },
   } = state;
 
+  console.log(wishItems);
+
   const [pageNumber, setPageNumber] = useState(0);
   const sellersPerPage = 5;
   const pagesVisited = pageNumber * sellersPerPage;

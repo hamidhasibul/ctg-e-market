@@ -27,11 +27,6 @@ const AccountUserInfo = () => {
   return (
     <>
       <div className="row userINfo">
-        <p className="mb-1">
-          My Earnings : <strong>1000 Taka</strong>{' '}
-        </p>
-      </div>
-      <div className="row userINfo">
         <p className="mb-1">User's Orders</p>
 
         {userOrders.length === 0 ? (

@@ -54,20 +54,21 @@ const Header = () => {
                 Sellers
               </NavLink>
             </li>
-            <li class="nav-item">
-              <Link class="nav-link" to="/cart">
-                <i class="fa-solid fa-cart-shopping"></i>
-                {cart.cartItems.length ? (
-                  <span className="badge badge-light text-dark">
-                    {cart.cartItems.length}
-                  </span>
-                ) : (
-                  <span class="badge badge-light text-dark">0</span>
-                )}
-              </Link>
-            </li>
+
             {userInfo && (
               <>
+                <li class="nav-item">
+                  <Link class="nav-link" to="/cart">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    {cart.cartItems.length ? (
+                      <span className="badge badge-light text-dark">
+                        {cart.cartItems.length}
+                      </span>
+                    ) : (
+                      <span class="badge badge-light text-dark">0</span>
+                    )}
+                  </Link>
+                </li>
                 <li class="nav-item">
                   <Link class="nav-link" to="/follow">
                     <i class="fa-solid fa-comments"></i>
@@ -89,22 +90,14 @@ const Header = () => {
             )}
           </ul>
           <form class="d-flex">
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button class="btn btn-outline-success" type="submit">
-              Search
-            </button>
-
             {userInfo ? (
               <span class="nav-link px-3 logout" onClick={signoutHandler}>
+                <i class="fa-solid fa-right-to-bracket me-2"></i>
                 Logout
               </span>
             ) : (
               <Link to="/login" class="nav-link px-3">
+                <i class="fa-solid fa-right-to-bracket me-2"></i>
                 Login
               </Link>
             )}

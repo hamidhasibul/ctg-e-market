@@ -154,7 +154,7 @@ const AccountsUser = () => {
                 {uploadingImage ? 'Uploading...' : 'Upload'}
               </button>
             </form>
-            {/* btn btn-light ms-4 */}
+
             <form onSubmit={handlerUpdate}>
               <div class="mb-3">
                 <label for="fullnameInput" class="form-label">
@@ -252,35 +252,8 @@ const AccountsUser = () => {
                   <Orders orders={orders} />
                 )}
               </div>
-              {/* Pagination */}
-
-              {/* <ul class="pagination d-flex justify-content-center">
-                <li class="page-item">
-                  <Link to="#" class="page-link " aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                  </Link>
-                </li>
-                <li class="page-item">
-                  <Link to="#" className="page-link">
-                    1
-                  </Link>
-                </li>
-                <li class="page-item">
-                  <Link to="#" class="page-link" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                  </Link>
-                </li>
-              </ul> */}
             </div>
             {openAdd && <AddProduct setOpenAdd={setOpenAdd} />}
-            {/* <h2 className="text-center">My Orders</h2>
-            <div className="account-orders">
-              {orders.length === 0 ? (
-                <h3 className="text-center">You currently have no orders!</h3>
-              ) : (
-                <Orders orders={orders} />
-              )}
-            </div> */}
           </div>
         </div>
       </div>

@@ -107,7 +107,7 @@ const UserInfoOrder = () => {
                   $
                   {order.orderItems
                     ?.filter((item) => item.sellerId === userId)
-                    ?.reduce((a, v) => (a = a + v.price), 0)
+                    ?.reduce((a, v) => (a = a + v.price * v.quantity), 0)
                     ?.toFixed(2)}
                 </span>
               </div>
@@ -119,7 +119,8 @@ const UserInfoOrder = () => {
                   {(
                     order.orderItems
                       ?.filter((item) => item.sellerId === userId)
-                      ?.reduce((a, v) => (a = a + v.price), 0) * 0.1
+                      ?.reduce((a, v) => (a = a + v.price * v.quantity), 0) *
+                    0.1
                   )?.toFixed(2)}
                 </span>
               </div>
@@ -130,10 +131,10 @@ const UserInfoOrder = () => {
                   {(
                     order.orderItems
                       ?.filter((item) => item.sellerId === userId)
-                      ?.reduce((a, v) => (a = a + v.price), 0) -
+                      ?.reduce((a, v) => (a = a + v.price * v.quantity), 0) -
                     order.orderItems
                       ?.filter((item) => item.sellerId === userId)
-                      ?.reduce((a, v) => (a = a + v.price), 0) *
+                      ?.reduce((a, v) => (a = a + v.price * v.quantity), 0) *
                       0.1
                   )?.toFixed(2)}
                 </span>

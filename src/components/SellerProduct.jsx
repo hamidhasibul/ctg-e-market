@@ -5,7 +5,7 @@ import SellerProductInfo from './SellerProductInfo';
 
 const SellerProduct = ({ product }) => {
   const [pageNumber, setPageNumber] = useState(0);
-  const productsPerPage = 12;
+  const productsPerPage = 1;
   const pagesVisited = pageNumber * productsPerPage;
 
   const pageCount = Math.ceil(product.length / productsPerPage);
