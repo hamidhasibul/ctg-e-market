@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react';
-import { useEffect } from 'react';
-import ReactPaginate from 'react-paginate';
-import { useNavigate } from 'react-router-dom';
-import { Store } from '../Store';
-import FollowSellerInfo from './FollowSellerInfo';
+import React, { useContext, useState } from "react";
+import { useEffect } from "react";
+import ReactPaginate from "react-paginate";
+import { useNavigate } from "react-router-dom";
+import { Store } from "../Store";
+import FollowSellerInfo from "./FollowSellerInfo";
 
 const FollowSeller = () => {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -26,9 +26,9 @@ const FollowSeller = () => {
   };
 
   useEffect(() => {
-    if (!localStorage.getItem('userInfo')) {
-      localStorage.getItem('userInfo');
-      navigate('/');
+    if (!localStorage.getItem("userInfo")) {
+      localStorage.getItem("userInfo");
+      navigate("/");
     }
   });
 
@@ -56,23 +56,23 @@ const FollowSeller = () => {
             {/* Pagination */}
             <ReactPaginate
               className="pagination d-flex justify-content-center"
-              previousLabel={'Prev'}
-              nextLabel={'Next'}
-              breakLabel={'...'}
+              previousLabel={"Prev"}
+              nextLabel={"Next"}
+              breakLabel={"..."}
               pageCount={pageCount}
               marginPagesDisplayed={2}
               pageRangeDisplayed={3}
               onPageChange={handlerPageClick}
-              pageClassName={'page-item'}
-              pageLinkClassName={'page-link'}
-              activeClassName={'active'}
-              previousClassName={'page-item'}
-              previousLinkClassName={'page-link'}
-              nextClassName={'page-item'}
-              nextLinkClassName={'page-link'}
-              breakClassName={'page-item'}
-              breakLinkClassName={'page-link'}
-              disabledClassName={'disabled'}
+              pageClassName={"page-item"}
+              pageLinkClassName={"page-link"}
+              activeClassName={"active"}
+              previousClassName={"page-item"}
+              previousLinkClassName={"page-link"}
+              nextClassName={"page-item"}
+              nextLinkClassName={"page-link"}
+              breakClassName={"page-item"}
+              breakLinkClassName={"page-link"}
+              disabledClassName={"disabled"}
             />
           </div>
         </div>
