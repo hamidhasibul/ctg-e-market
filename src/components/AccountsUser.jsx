@@ -1,17 +1,17 @@
-import { React, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import Password from './forms/Password';
-import UserProduct from './UserProduct';
-import AddProduct from './AddProduct';
-import Orders from './Orders';
-import AccountUserInfo from './AccountUserInfo';
+import { React, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Password from "./forms/Password";
+import UserProduct from "./UserProduct";
+import AddProduct from "./AddProduct";
+import Orders from "./Orders";
+import AccountUserInfo from "./AccountUserInfo";
 
 const AccountsUser = () => {
   const navigate = useNavigate();
 
-  const userInfo = localStorage.getItem('userInfo')
-    ? JSON.parse(localStorage.getItem('userInfo'))
+  const userInfo = localStorage.getItem("userInfo")
+    ? JSON.parse(localStorage.getItem("userInfo"))
     : null;
 
   const [name, setName] = useState(userInfo && userInfo.name);
@@ -32,9 +32,9 @@ const AccountsUser = () => {
   const id = userInfo && userInfo._id;
 
   useEffect(() => {
-    if (!localStorage.getItem('userInfo')) {
-      localStorage.getItem('userInfo');
-      navigate('/');
+    if (!localStorage.getItem("userInfo")) {
+      localStorage.getItem("userInfo");
+      navigate("/");
     }
 
     const fetchData = async () => {
@@ -47,7 +47,7 @@ const AccountsUser = () => {
         console.log(result.data);
         setOrders(result.data);
       } catch (err) {
-        console.log('Error!');
+        console.log("Error!");
       }
     };
 
@@ -58,24 +58,24 @@ const AccountsUser = () => {
     e.preventDefault();
 
     try {
-      const { data } = await axios.put('/api/users/update', {
+      const { data } = await axios.put("/api/users/update", {
         _id: userInfo._id,
         name,
         email,
         address,
         phone,
       });
-      localStorage.setItem('userInfo', JSON.stringify(data));
+      localStorage.setItem("userInfo", JSON.stringify(data));
       alert(`User Updated !!`);
     } catch (error) {
-      alert('Account Update failed!');
+      alert("Account Update failed!");
     }
   };
 
   const validateImage = async (e) => {
     const file = e.target.files[0];
     if (file.size >= 1048576) {
-      return alert('Max Size for Image is 1MB');
+      return alert("Max Size for Image is 1MB");
     } else {
       setImage(file);
       setPreviewImage(URL.createObjectURL(file));
@@ -84,14 +84,14 @@ const AccountsUser = () => {
 
   const uploadImage = async () => {
     const data = new FormData();
-    data.append('file', image);
-    data.append('upload_preset', 'ctg-e-market');
+    data.append("file", image);
+    data.append("upload_preset", "ctg-e-market");
     try {
       setUploadingImage(true);
       let res = await fetch(
-        'https://api.cloudinary.com/v1_1/dpxmimqsi/image/upload',
+        "https://api.cloudinary.com/v1_1/dpxmimqsi/image/upload",
         {
-          method: 'post',
+          method: "post",
           body: data,
         }
       );
@@ -108,18 +108,18 @@ const AccountsUser = () => {
     e.preventDefault();
 
     if (!image) {
-      return alert('Please select your Profile Image');
+      return alert("Please select your Profile Image");
     }
 
     const url = await uploadImage(image);
     console.log(url);
 
-    const { data } = await axios.put('/api/users/update', {
+    const { data } = await axios.put("/api/users/update", {
       _id: userInfo._id,
       image: url,
     });
-    localStorage.setItem('userInfo', JSON.stringify(data));
-    alert('Profile Image updated successfully!');
+    localStorage.setItem("userInfo", JSON.stringify(data));
+    alert("Profile Image updated successfully!");
   };
 
   return (
@@ -136,7 +136,7 @@ const AccountsUser = () => {
               />
 
               {uploadingImage ? (
-                'Uploading....'
+                "Uploading...."
               ) : (
                 <label htmlFor="image_upload" className="uploadIcon">
                   <i class="fa-solid fa-circle-plus"></i>
@@ -151,7 +151,7 @@ const AccountsUser = () => {
                 onChange={validateImage}
               />
               <button className="btn btn-light ms-4">
-                {uploadingImage ? 'Uploading...' : 'Upload'}
+                {uploadingImage ? "Uploading..." : "Upload"}
               </button>
             </form>
 

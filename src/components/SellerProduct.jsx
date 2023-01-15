@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import ReactPaginate from 'react-paginate';
-import SellerProductInfo from './SellerProductInfo';
+import ReactPaginate from "react-paginate";
+import SellerProductInfo from "./SellerProductInfo";
 
 const SellerProduct = ({ product }) => {
   const [pageNumber, setPageNumber] = useState(0);
-  const productsPerPage = 1;
+  const productsPerPage = 4;
   const pagesVisited = pageNumber * productsPerPage;
 
   const pageCount = Math.ceil(product.length / productsPerPage);
@@ -26,23 +26,23 @@ const SellerProduct = ({ product }) => {
         {/* Pagination */}
         <ReactPaginate
           className="pagination d-flex justify-content-center"
-          previousLabel={'Prev'}
-          nextLabel={'Next'}
-          breakLabel={'...'}
+          previousLabel={"Prev"}
+          nextLabel={"Next"}
+          breakLabel={"..."}
           pageCount={pageCount}
           marginPagesDisplayed={2}
           pageRangeDisplayed={3}
           onPageChange={handlerPageClick}
-          pageClassName={'page-item'}
-          pageLinkClassName={'page-link'}
-          activeClassName={'active'}
-          previousClassName={'page-item'}
-          previousLinkClassName={'page-link'}
-          nextClassName={'page-item'}
-          nextLinkClassName={'page-link'}
-          breakClassName={'page-item'}
-          breakLinkClassName={'page-link'}
-          disabledClassName={'disabled'}
+          pageClassName={"page-item"}
+          pageLinkClassName={"page-link"}
+          activeClassName={"active"}
+          previousClassName={"page-item"}
+          previousLinkClassName={"page-link"}
+          nextClassName={"page-item"}
+          nextLinkClassName={"page-link"}
+          breakClassName={"page-item"}
+          breakLinkClassName={"page-link"}
+          disabledClassName={"disabled"}
         />
       </div>
     </>

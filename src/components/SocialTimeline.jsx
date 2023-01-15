@@ -1,10 +1,14 @@
+import axios from "axios";
 import React, { useEffect } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
-import DemoUserImage from "../images/28.jpg";
 
 const SocialTimeline = () => {
   const navigate = useNavigate();
+
+  const [post, setPost] = useState();
+  const [image, setImage] = useState();
+  const [allPosts, setAllPosts] = useState([]);
 
   const userInfo = localStorage.getItem("userInfo")
     ? JSON.parse(localStorage.getItem("userInfo"))
@@ -12,14 +16,50 @@ const SocialTimeline = () => {
 
   const id = userInfo && userInfo._id;
 
+  const validateImagePost = async (e) => {
+    const filePost = e.target.files[0];
+    if (filePost.size >= 1048576) {
+      return alert("Max Size for Image is 2MB");
+    } else {
+      setImage(filePost);
+    }
+  };
+
   useEffect(() => {
     if (!localStorage.getItem("userInfo")) {
       localStorage.getItem("userInfo");
       navigate("/");
     }
+
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`/api/posts/`);
+        console.log(res.data);
+        setAllPosts(res.data);
+      } catch (err) {
+        console.log("Error!");
+      }
+    };
+
+    fetchData();
   }, [navigate, id]);
 
-  console.log(userInfo);
+  const handlerAddPost = async (e) => {
+    e.preventDefault();
+
+    try {
+      const { data } = await axios.post("/api/posts/add", {
+        post,
+        image,
+        posterId: userInfo._id,
+        poster: userInfo.name,
+        posterImage: userInfo.image,
+      });
+      alert("You have successfully added Post!");
+    } catch (error) {
+      alert("Add Failed ! try again.");
+    }
+  };
 
   return (
     <>
@@ -66,11 +106,13 @@ const SocialTimeline = () => {
             </div>
             {/* Post Section */}
             <div className="profilePostCard border rounded bg-light p-3 mb-3">
-              <form>
+              <form onSubmit={handlerAddPost}>
                 <textarea
                   className="form-control mb-2"
                   rows="4"
                   placeholder="Write something....."
+                  onChange={(e) => setPost(e.target.value)}
+                  value={post}
                 ></textarea>
                 <div className="d-flex justify-content-between">
                   <label
@@ -83,6 +125,7 @@ const SocialTimeline = () => {
                       type="file"
                       src=""
                       alt=""
+                      onChange={validateImagePost}
                       id="socialImg"
                       style={{ display: "none" }}
                     />
@@ -93,45 +136,42 @@ const SocialTimeline = () => {
             </div>
             {/* All Post Section */}
             <div className="allPostsCard border rounded bg-light p-3">
-              <div className="indPostCard bg-white rounded p-2 mb-3">
-                <div className="row">
-                  <div className="col-lg-2">
-                    <img
-                      src={DemoUserImage}
-                      alt=""
-                      style={{ height: "4rem" }}
-                      className="rounded-circle"
-                    />
-                  </div>
-                  <div className="col-lg-10">
-                    <p className="fw-bold">Demo Poster Name</p>
-                    <p>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Labore ipsam quisquam fuga, omnis ullam qui earum nihil
-                      esse ipsum quae unde, hic itaque? Ullam similique
-                      asperiores quidem, doloribus minus eaque!
-                    </p>
-                    <img
-                      src={require("../images/photo-1541701494587-cb58502866ab.jpg")}
-                      alt=""
-                      style={{ height: "10rem" }}
-                      className="mb-2"
-                    />
-                    <div className="border rounded p-2 d-flex justify-content-between mb-2">
-                      <input
-                        type="text"
-                        name=""
-                        id=""
-                        className="form-control form-control-sm me-1"
-                        placeholder="Write a comment...."
+              {allPosts.map((posts) => (
+                <div className="indPostCard bg-white rounded p-2 mb-3">
+                  <div className="row">
+                    <div className="col-lg-2">
+                      <img
+                        src={posts.posterImage}
+                        alt=""
+                        style={{ height: "4rem" }}
+                        className="rounded-circle"
                       />
-                      <button className="btn btn-sm btn-success ms-1">
-                        Comment
-                      </button>
+                    </div>
+                    <div className="col-lg-10">
+                      <p className="fw-bold">{posts.poster}</p>
+                      <p>{posts.post}</p>
+                      {/* <img
+                        src={require("../images/photo-1541701494587-cb58502866ab.jpg")}
+                        alt=""
+                        style={{ height: "10rem" }}
+                        className="mb-2"
+                      /> */}
+                      <div className="border rounded p-2 d-flex justify-content-between mb-2">
+                        <input
+                          type="text"
+                          name=""
+                          id=""
+                          className="form-control form-control-sm me-1"
+                          placeholder="Write a comment...."
+                        />
+                        <button className="btn btn-sm btn-success ms-1">
+                          Comment
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
