@@ -1,28 +1,28 @@
-import axios from "axios";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const AddProduct = ({ setOpenAdd }) => {
   const navigate = useNavigate();
 
-  const [name, setName] = useState("");
-  const [slug, setSlug] = useState("");
-  const [category, setCategory] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
+  const [name, setName] = useState('');
+  const [slug, setSlug] = useState('');
+  const [category, setCategory] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState('');
   const [imageProduct, setImageProduct] = useState(null);
 
   const [uploadingImageProduct, setUploadingImageProduct] = useState(false);
   const [previewImageProduct, setPreviewImageProduct] = useState(false);
 
-  const userInfo = localStorage.getItem("userInfo")
-    ? JSON.parse(localStorage.getItem("userInfo"))
+  const userInfo = localStorage.getItem('userInfo')
+    ? JSON.parse(localStorage.getItem('userInfo'))
     : null;
 
   const validateImageProduct = async (e) => {
     const fileProduct = e.target.files[0];
     if (fileProduct.size >= 1048576) {
-      return alert("Max Size for Image is 1MB");
+      return alert('Max Size for Image is 1MB');
     } else {
       setImageProduct(fileProduct);
       setPreviewImageProduct(URL.createObjectURL(fileProduct));
@@ -31,14 +31,14 @@ const AddProduct = ({ setOpenAdd }) => {
 
   const uploadImageProduct = async () => {
     const dataProduct = new FormData();
-    dataProduct.append("file", imageProduct);
-    dataProduct.append("upload_preset", "ctg-e-market");
+    dataProduct.append('file', imageProduct);
+    dataProduct.append('upload_preset', 'ctg-e-market');
     try {
       setUploadingImageProduct(true);
       let res = await fetch(
-        "https://api.cloudinary.com/v1_1/dpxmimqsi/image/upload",
+        'https://api.cloudinary.com/v1_1/dpxmimqsi/image/upload',
         {
-          method: "post",
+          method: 'post',
           body: dataProduct,
         }
       );
@@ -55,13 +55,12 @@ const AddProduct = ({ setOpenAdd }) => {
     e.preventDefault();
 
     if (!imageProduct) {
-      return alert("Please select your Product  Image");
+      return alert('Please select your Product  Image');
     }
     const url = await uploadImageProduct(imageProduct);
-    console.log(url);
 
     try {
-      const { data } = await axios.post("/api/products/add", {
+      const { data } = await axios.post('/api/products/add', {
         name,
         slug,
         category,
@@ -73,11 +72,11 @@ const AddProduct = ({ setOpenAdd }) => {
         sellerImage: userInfo.image,
       });
       console.log(data);
-      alert("You have successfully added Product!");
-      navigate("/account");
+      alert('You have successfully added Product!');
+      navigate('/account');
       setOpenAdd(false);
     } catch (error) {
-      alert("Add Failed ! try again.");
+      alert('Add Failed ! try again.');
     }
 
     // const url = await uploadImageProduct(imageProduct);
@@ -186,14 +185,14 @@ const AddProduct = ({ setOpenAdd }) => {
             <img
               src={
                 previewImageProduct ||
-                "https://res.cloudinary.com/dpxmimqsi/image/upload/v1668429059/surgery_ogknku.png"
+                'https://res.cloudinary.com/dpxmimqsi/image/upload/v1668429059/surgery_ogknku.png'
               }
               alt=""
               className="img-fluid mb-3 productImageStl "
             />
 
             {uploadingImageProduct ? (
-              "Uploading...."
+              'Uploading....'
             ) : (
               <label htmlFor="image_upload_product" className="uploadIcon">
                 <i class="fa-solid fa-circle-plus"></i>
@@ -211,7 +210,7 @@ const AddProduct = ({ setOpenAdd }) => {
 
           <div className="mb-3">
             <button className="btn btn-primary">
-              {uploadingImageProduct ? "Saving..." : "Save Product"}
+              {uploadingImageProduct ? 'Saving...' : 'Save Product'}
             </button>
           </div>
         </form>
