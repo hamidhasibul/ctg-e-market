@@ -10,6 +10,8 @@ const SocialTimeline = () => {
   const [image, setImage] = useState();
   const [allPosts, setAllPosts] = useState([]);
 
+  const [update, setUpdate] = useState(0);
+
   const userInfo = localStorage.getItem('userInfo')
     ? JSON.parse(localStorage.getItem('userInfo'))
     : null;
@@ -42,7 +44,7 @@ const SocialTimeline = () => {
     };
 
     fetchData();
-  }, [navigate, id]);
+  }, [navigate, id, update]);
 
   const uploadImageProduct = async () => {
     const dataPost = new FormData();
@@ -79,6 +81,7 @@ const SocialTimeline = () => {
         posterImage: userInfo.image,
       });
       console.log(data);
+      setUpdate(update + 1);
       alert('You have successfully added Post!');
     } catch (error) {
       alert('Add Failed ! try again.');
@@ -160,7 +163,7 @@ const SocialTimeline = () => {
             </div>
             {/* All Post Section */}
             <div className="allPostsCard border rounded bg-light p-3">
-              {allPosts.map((posts) => (
+              {[...allPosts].reverse().map((posts) => (
                 <div className="indPostCard bg-white rounded p-2 mb-3">
                   <div className="row">
                     <div className="col-lg-2">

@@ -9,6 +9,8 @@ const Filter = () => {
   const [category, setCategory] = useState([]);
   const [query, setQuery] = useState('');
 
+  const [update, setUpdate] = useState(0);
+
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios.get('/api/products');
@@ -21,7 +23,7 @@ const Filter = () => {
     };
 
     fetchData();
-  }, []);
+  }, [update]);
 
   const filterResult = (catItem) => {
     const catResult = products.filter((curCat) => {
@@ -62,7 +64,9 @@ const Filter = () => {
                   <button
                     className="btn btn-sm btn-secondary"
                     key={cat._id}
-                    onClick={() => filterResult(cat.name)}
+                    onClick={() => {
+                      filterResult(cat.name);
+                    }}
                   >
                     {cat.name}
                   </button>

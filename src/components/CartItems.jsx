@@ -70,7 +70,7 @@ const CartItems = () => {
                           />
                           <Link to={`../seller/${item.sellerId}`}>
                             <img
-                              src="./assets/images/users/28.jpg"
+                              src={item.sellerImage}
                               alt=""
                               className="seller-image"
                             />

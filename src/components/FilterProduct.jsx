@@ -6,10 +6,16 @@ import FilterProductInfo from './FilterProductInfo';
 
 const FilterProduct = ({ products }) => {
   const [pageNumber, setPageNumber] = useState(0);
-  const productsPerPage = 10;
+  const productsPerPage = 6;
   const pagesVisited = pageNumber * productsPerPage;
 
   const pageCount = Math.ceil(products.length / productsPerPage);
+
+  const userInfo = localStorage.getItem('userInfo')
+    ? JSON.parse(localStorage.getItem('userInfo'))
+    : null;
+
+  const userId = userInfo && userInfo._id;
 
   const handlerPageClick = ({ selected }) => {
     setPageNumber(selected);
@@ -20,6 +26,9 @@ const FilterProduct = ({ products }) => {
       <div className="filter-cards">
         <div className="d-flex flex-wrap justify-content-center mb-4">
           {products
+            .filter((product) => {
+              return product.sellerId !== userId;
+            })
             .slice(pagesVisited, pagesVisited + productsPerPage)
             .map((product) => (
               <FilterProductInfo key={product._id} product={product} />

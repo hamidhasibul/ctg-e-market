@@ -13,6 +13,12 @@ const SellFilterMain = ({ seller }) => {
 
   const pageCount = Math.ceil(seller.length / sellersPerPage);
 
+  const userInfo = localStorage.getItem('userInfo')
+    ? JSON.parse(localStorage.getItem('userInfo'))
+    : null;
+
+  const userId = userInfo && userInfo._id;
+
   const handlerPageClick = ({ selected }) => {
     setPageNumber(selected);
   };
@@ -22,6 +28,9 @@ const SellFilterMain = ({ seller }) => {
       <div className="row">
         <div className="sellers-section d-flex flex-wrap justify-content-center">
           {seller
+            .filter((seller) => {
+              return seller._id !== userId;
+            })
             .slice(pagesVisited, pagesVisited + sellersPerPage)
             .map((user) => (
               <SellFilterInfo key={user._id} user={user} />

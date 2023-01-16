@@ -7,8 +7,14 @@ import axios from 'axios';
 import LatestSeller from './LatestSeller';
 
 const Latest = () => {
-  const [users, setUsers] = useState([]); //Default is empty
-  const [products, setProducts] = useState([]); //Default is empty
+  const [users, setUsers] = useState([]);
+  const [products, setProducts] = useState([]);
+
+  const userInfo = localStorage.getItem('userInfo')
+    ? JSON.parse(localStorage.getItem('userInfo'))
+    : null;
+
+  const userId = userInfo && userInfo._id;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,38 +37,43 @@ const Latest = () => {
           <div className="col-lg-12">
             <h2 className="text-center my-2">New Fresh Products</h2>
             <div className="latest-products d-flex flex-wrap justify-content-center">
-              {products.slice(-3).map((product) => (
-                <div class="card w-25 mx-2 mb-4" key={product._id}>
-                  <img
-                    src={product.image}
-                    class="card-img-top card-image"
-                    alt={product.name}
-                  />
-                  <Link to="/">
+              {products
+                .filter((product) => {
+                  return product.sellerId !== userId;
+                })
+                .slice(-3)
+                .map((product) => (
+                  <div class="card w-25 mx-2 mb-4" key={product._id}>
                     <img
-                      src={product.sellerImage}
-                      alt=""
-                      className="seller-image"
+                      src={product.image}
+                      class="card-img-top card-image"
+                      alt={product.name}
                     />
-                  </Link>
-                  <div class="card-body">
-                    <h5 class="card-title">
-                      <Link
-                        to={`${product.slug}`}
-                        className="product-link text-dark"
-                      >
-                        {product.name}
-                      </Link>
-                    </h5>
-                    <p class="card-text">
-                      <span>{product.category}</span>
-                      <br />
-                      <span>{product.price} Taka</span>
-                      <br />
-                    </p>
+                    <Link to="/">
+                      <img
+                        src={product.sellerImage}
+                        alt=""
+                        className="seller-image"
+                      />
+                    </Link>
+                    <div class="card-body">
+                      <h5 class="card-title">
+                        <Link
+                          to={`${product.slug}`}
+                          className="product-link text-dark"
+                        >
+                          {product.name}
+                        </Link>
+                      </h5>
+                      <p class="card-text">
+                        <span>{product.category}</span>
+                        <br />
+                        <span>{product.price} Taka</span>
+                        <br />
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         </div>
@@ -70,9 +81,14 @@ const Latest = () => {
           <div className="col-lg-12">
             <h2 className="text-center py-2">Registered Sellers</h2>
             <div className="sellers-section d-flex flex-wrap justify-content-center">
-              {users.slice(-5).map((user) => (
-                <LatestSeller key={user._id} user={user} />
-              ))}
+              {users
+                .filter((user) => {
+                  return user._id !== userId;
+                })
+                .slice(-5)
+                .map((user) => (
+                  <LatestSeller key={user._id} user={user} />
+                ))}
             </div>
           </div>
         </div>
