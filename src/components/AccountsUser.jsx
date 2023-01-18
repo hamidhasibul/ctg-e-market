@@ -237,14 +237,16 @@ const AccountsUser = () => {
               >
                 Add Product
               </button>
-              <div className="account-products">
+              <div className="account-products border-bottom mb-5">
                 {product.length === 0 ? (
                   <h4 className="text-center mb-4">No products added</h4>
                 ) : (
                   <UserProduct product={product} />
                 )}
               </div>
-              <h5 className="mb-4 text-center">My Orders</h5>
+              <h5 className="mb-4 text-center">
+                Orders You've made to other salers
+              </h5>
               <div className="account-orders text-center">
                 {orders.length === 0 ? (
                   <h3 className="info">You currently have no orders!</h3>

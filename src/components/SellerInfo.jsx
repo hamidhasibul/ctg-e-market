@@ -1,15 +1,17 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-
 import { useParams } from "react-router-dom";
 import { Store } from "../Store";
 import SellerProduct from "./SellerProduct";
+import ReactWhatsapp from "react-whatsapp";
 
 const SellerInfo = () => {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, wish } = state;
   const [seller, setSeller] = useState([]);
   const [product, setProduct] = useState([]);
+  const country = "+88";
+  const rootMsg = `Hello I'm contacting you from Ctg-E-Market`;
 
   const params = useParams();
   const { id } = params;
@@ -32,8 +34,6 @@ const SellerInfo = () => {
     };
     fetchData();
   }, [id]);
-
-  console.log(seller);
 
   const handlerFollow = () => {
     if (!existUser) {
@@ -78,7 +78,7 @@ const SellerInfo = () => {
                   className="img-fluid mb-4 seller-info-img"
                 />
               </div>
-              <div className="seller-info-body text-center">
+              <div className="seller-info-body text-center mb-4">
                 <p className="mb-1  fw-bold">{seller.name}</p>
                 <p className="mb-1 ">{seller.address}</p>
                 <p className="mb-1 ">{seller.email}</p>
@@ -100,6 +100,16 @@ const SellerInfo = () => {
                     Follow
                   </span>
                 )}
+              </div>
+
+              <div className="text-center">
+                <ReactWhatsapp
+                  className="btn btn-warning"
+                  number={country + seller.phone}
+                  message={rootMsg}
+                >
+                  Contact Seller via Whatsapp
+                </ReactWhatsapp>
               </div>
             </div>
           </div>
