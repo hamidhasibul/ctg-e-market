@@ -1,7 +1,7 @@
-import axios from 'axios';
-import React, { useEffect } from 'react';
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import axios from "axios";
+import React, { useEffect } from "react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const SocialTimeline = () => {
   const navigate = useNavigate();
@@ -12,8 +12,8 @@ const SocialTimeline = () => {
 
   const [update, setUpdate] = useState(0);
 
-  const userInfo = localStorage.getItem('userInfo')
-    ? JSON.parse(localStorage.getItem('userInfo'))
+  const userInfo = localStorage.getItem("userInfo")
+    ? JSON.parse(localStorage.getItem("userInfo"))
     : null;
 
   const id = userInfo && userInfo._id;
@@ -21,16 +21,16 @@ const SocialTimeline = () => {
   const validateImagePost = async (e) => {
     const filePost = e.target.files[0];
     if (filePost.size >= 1048576) {
-      return alert('Max Size for Image is 2MB');
+      return alert("Max Size for Image is 2MB");
     } else {
       setImage(filePost);
     }
   };
 
   useEffect(() => {
-    if (!localStorage.getItem('userInfo')) {
-      localStorage.getItem('userInfo');
-      navigate('/');
+    if (!localStorage.getItem("userInfo")) {
+      localStorage.getItem("userInfo");
+      navigate("/");
     }
 
     const fetchData = async () => {
@@ -39,7 +39,7 @@ const SocialTimeline = () => {
         console.log(res.data);
         setAllPosts(res.data);
       } catch (err) {
-        console.log('Error!');
+        console.log("Error!");
       }
     };
 
@@ -48,14 +48,14 @@ const SocialTimeline = () => {
 
   const uploadImageProduct = async () => {
     const dataPost = new FormData();
-    dataPost.append('file', image);
-    dataPost.append('upload_preset', 'ctg-e-market');
+    dataPost.append("file", image);
+    dataPost.append("upload_preset", "ctg-e-market");
     try {
       // setUploadingImageProduct(true);
       let res = await fetch(
-        'https://api.cloudinary.com/v1_1/dpxmimqsi/image/upload',
+        "https://api.cloudinary.com/v1_1/dpxmimqsi/image/upload",
         {
-          method: 'post',
+          method: "post",
           body: dataPost,
         }
       );
@@ -73,7 +73,7 @@ const SocialTimeline = () => {
     const url = await uploadImageProduct(image);
 
     try {
-      const { data } = await axios.post('/api/posts/add', {
+      const { data } = await axios.post("/api/posts/add", {
         post,
         image: url,
         posterId: userInfo._id,
@@ -82,9 +82,9 @@ const SocialTimeline = () => {
       });
       console.log(data);
       setUpdate(update + 1);
-      alert('You have successfully added Post!');
+      alert("You have successfully added Post!");
     } catch (error) {
-      alert('Add Failed ! try again.');
+      alert("Add Failed ! try again.");
     }
   };
 
@@ -102,13 +102,13 @@ const SocialTimeline = () => {
 
             <div class="list-group">
               <Link
-                to={'/account'}
+                to={"/account"}
                 class="list-group-item list-group-item-action"
               >
                 My Acccount
               </Link>
               <Link
-                to={'/account'}
+                to={"/account"}
                 class="list-group-item list-group-item-action"
               >
                 My Products
@@ -145,7 +145,7 @@ const SocialTimeline = () => {
                   <label
                     htmlFor="socialImg"
                     className="form-label"
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: "pointer" }}
                   >
                     <i class="fa-regular fa-image text-secondary"></i>
                     <input
@@ -154,7 +154,7 @@ const SocialTimeline = () => {
                       alt=""
                       onChange={validateImagePost}
                       id="socialImg"
-                      style={{ display: 'none' }}
+                      style={{ display: "none" }}
                     />
                   </label>
                   <button className="btn btn-sm btn-success">Post</button>
@@ -170,7 +170,7 @@ const SocialTimeline = () => {
                       <img
                         src={posts.posterImage}
                         alt=""
-                        style={{ height: '4rem' }}
+                        style={{ height: "4rem" }}
                         className="rounded-circle"
                       />
                     </div>
@@ -180,10 +180,10 @@ const SocialTimeline = () => {
                       <img
                         src={posts.image}
                         alt=""
-                        style={{ height: '10rem' }}
+                        style={{ height: "10rem" }}
                         className="mb-2"
                       />
-                      <div className="border rounded p-2 d-flex justify-content-between mb-2">
+                      {/* <div className="border rounded p-2 d-flex justify-content-between mb-2">
                         <input
                           type="text"
                           name=""
@@ -194,7 +194,7 @@ const SocialTimeline = () => {
                         <button className="btn btn-sm btn-success ms-1">
                           Comment
                         </button>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>

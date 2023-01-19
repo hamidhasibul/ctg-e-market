@@ -1,21 +1,20 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const UserInfoOrder = () => {
-  const userInfo = localStorage.getItem('userInfo')
-    ? JSON.parse(localStorage.getItem('userInfo'))
+  const userInfo = localStorage.getItem("userInfo")
+    ? JSON.parse(localStorage.getItem("userInfo"))
     : null;
 
   const userId = userInfo && userInfo._id;
-
-  console.log(userId);
 
   const params = useParams();
   const { id } = params;
 
   const navigate = useNavigate();
 
+  const [text, setText] = useState("");
   const [order, setOrder] = useState([]);
 
   useEffect(() => {
@@ -23,26 +22,39 @@ const UserInfoOrder = () => {
       try {
         const { data } = await axios.get(`/api/orders/${id}`);
 
-        console.log(data);
         setOrder(data);
       } catch (err) {
-        alert('Order not found!');
+        alert("Order not found!");
       }
     };
 
     if (!userInfo) {
-      return navigate('/');
+      return navigate("/");
     }
 
     fetchOrder();
   }, [id, navigate, userInfo]);
+
+  function sendOtp() {
+    var num = "88" + order.phone;
+    var msg = text;
+
+    axios
+      .post("https://sowdaapp.com/sendotp.php", {
+        num: num,
+        msg: msg,
+      })
+      .then((res) => console.log(""))
+      .catch((err) => console.log(err));
+  }
+
   return (
     <>
       <div className="container-lg">
         <Link className="nav-link" to="/account">
           Go Back
         </Link>
-        <div className="row orderRow">
+        <div className="row orderRow my-2">
           <h3 className="text-center">My Order No: {order._id}</h3>
         </div>
         <div className="row">
@@ -156,6 +168,19 @@ const UserInfoOrder = () => {
                 ) : (
                   <span>Not Delivered!</span>
                 )}
+              </div>
+            </div>
+            <div className="infoGroups my-5">
+              <div className="info-group">
+                <h4 className="mb-3">Notify User</h4>
+                <input
+                  type="text"
+                  className="form-control mb-2"
+                  onChange={(e) => setText(e.target.value)}
+                />
+                <button className="btn btn-primary" onClick={sendOtp}>
+                  Send
+                </button>
               </div>
             </div>
           </div>
