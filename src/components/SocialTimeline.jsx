@@ -10,6 +10,8 @@ const SocialTimeline = () => {
   const [image, setImage] = useState();
   const [allPosts, setAllPosts] = useState([]);
 
+  const [delPost, setDelPost] = useState();
+
   const [update, setUpdate] = useState(0);
 
   const userInfo = localStorage.getItem("userInfo")
@@ -88,8 +90,71 @@ const SocialTimeline = () => {
     }
   };
 
+  const handlerDeletePost = async (e) => {
+    e.preventDefault();
+
+    try {
+      const { data } = await axios.delete(`/api/posts/delete/${delPost}`);
+
+      if (data) {
+        setUpdate(update + 1);
+        alert(`Product Deleted Successfully`);
+      }
+    } catch (error) {
+      alert("Product not Deleted");
+    }
+  };
+
   return (
     <>
+      {/* Modal */}
+
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Modal title
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              Are you sure you want to Delete this Post ?
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-bs-dismiss="modal"
+                onClick={handlerDeletePost}
+              >
+                Delete Post
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Modal Ends */}
+
       <div className="container-lg">
         <div className="row my-4">
           <div className="col-lg-4">
@@ -173,9 +238,27 @@ const SocialTimeline = () => {
                         style={{ height: "4rem" }}
                         className="rounded-circle"
                       />
+                      {userInfo._id === posts.posterId && (
+                        <button
+                          className="btn btn-light"
+                          data-bs-toggle="modal"
+                          data-bs-target="#exampleModal"
+                          onClick={() => {
+                            setDelPost(posts._id);
+                          }}
+                        >
+                          <i class="fa-solid fa-trash"></i>
+                        </button>
+                      )}
                     </div>
                     <div className="col-lg-10">
-                      <p className="fw-bold">{posts.poster}</p>
+                      <Link
+                        to={`../seller/${posts.posterId}`}
+                        className="text-decoration-none text-dark"
+                      >
+                        <p className="fw-bold">{posts.poster}</p>
+                      </Link>
+
                       <p>{posts.post}</p>
                       <img
                         src={posts.image}
