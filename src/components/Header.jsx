@@ -5,7 +5,9 @@ import { Store } from "../Store";
 const Header = () => {
   const navigate = useNavigate();
 
-  const userInfo = localStorage.getItem("userInfo");
+  const userInfo = localStorage.getItem("userInfo")
+    ? JSON.parse(localStorage.getItem("userInfo"))
+    : null;
 
   const { state } = useContext(Store);
   const { cart, wish } = state;
@@ -83,7 +85,7 @@ const Header = () => {
                 </li>
                 <li class="nav-item">
                   <Link class="nav-link" to="/account">
-                    <i class="fa-solid fa-user"></i>
+                    <i class="fa-solid fa-user"></i> {userInfo.name}
                   </Link>
                 </li>
                 <li class="nav-item">
@@ -91,6 +93,47 @@ const Header = () => {
                     <i class="fa-solid fa-hashtag"></i> Social
                   </Link>
                 </li>
+                {userInfo && userInfo.isAdmin && (
+                  <li class="nav-item">
+                    <div class="dropdown">
+                      <button
+                        class="btn dropdown-toggle text-secondary"
+                        type="button"
+                        id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        <i class="fa-solid fa-gear"></i> Admin Panel
+                      </button>
+                      <ul
+                        class="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton1"
+                      >
+                        <li>
+                          <Link
+                            class="dropdown-item nav-link"
+                            to="/admin/dashboard"
+                          >
+                            Dashboard
+                          </Link>
+                        </li>
+                        <li>
+                          <Link class="dropdown-item nav-link" to="/">
+                            Products
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            class="dropdown-item nav-link"
+                            to="/admin/socialcontrol"
+                          >
+                            Social Control
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                )}
               </>
             )}
           </ul>

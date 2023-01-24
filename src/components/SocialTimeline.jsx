@@ -38,7 +38,7 @@ const SocialTimeline = () => {
     const fetchData = async () => {
       try {
         const res = await axios.get(`/api/posts/`);
-        console.log(res.data);
+
         setAllPosts(res.data);
       } catch (err) {
         console.log("Error!");
@@ -98,10 +98,10 @@ const SocialTimeline = () => {
 
       if (data) {
         setUpdate(update + 1);
-        alert(`Product Deleted Successfully`);
+        alert(`Post Deleted Successfully`);
       }
     } catch (error) {
-      alert("Product not Deleted");
+      alert("Post not Deleted");
     }
   };
 

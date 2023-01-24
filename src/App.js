@@ -15,6 +15,9 @@ import Order from "./components/Order";
 
 import UserInfoOrder from "./components/UserInfoOrder";
 import Social from "./pages/social/Social";
+import { AdminDashboard } from "./pages/admin/AdminDashboard";
+import { ProtectedAdminRoute } from "./components/ProtectedAdminRoute";
+import AdminSocialControl from "./pages/admin/AdminSocialControl";
 
 function App() {
   return (
@@ -22,6 +25,24 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
+          {/* Admin routes */}
+          <Route
+            path="/admin/dashboard"
+            element={
+              <ProtectedAdminRoute>
+                <AdminDashboard />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="/admin/socialcontrol"
+            element={
+              <ProtectedAdminRoute>
+                <AdminSocialControl />
+              </ProtectedAdminRoute>
+            }
+          />
+          {/* Admin routes */}
           <Route path="/shop" element={<Shop />} />
           <Route path="/:slug" element={<Product />} />
           <Route path="/seller" element={<Seller />} />
