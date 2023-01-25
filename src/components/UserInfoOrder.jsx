@@ -1,10 +1,10 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const UserInfoOrder = () => {
-  const userInfo = localStorage.getItem("userInfo")
-    ? JSON.parse(localStorage.getItem("userInfo"))
+  const userInfo = localStorage.getItem('userInfo')
+    ? JSON.parse(localStorage.getItem('userInfo'))
     : null;
 
   const userId = userInfo && userInfo._id;
@@ -14,7 +14,7 @@ const UserInfoOrder = () => {
 
   const navigate = useNavigate();
 
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
   const [order, setOrder] = useState([]);
 
   useEffect(() => {
@@ -24,27 +24,27 @@ const UserInfoOrder = () => {
 
         setOrder(data);
       } catch (err) {
-        alert("Order not found!");
+        alert('Order not found!');
       }
     };
 
     if (!userInfo) {
-      return navigate("/");
+      return navigate('/');
     }
 
     fetchOrder();
   }, [id, navigate, userInfo]);
 
   function sendOtp() {
-    var num = "88" + order.phone;
+    var num = '880';
     var msg = text;
 
     axios
-      .post("https://sowdaapp.com/sendotp.php", {
+      .post('https://sowdaapp.com/sendotp.php', {
         num: num,
         msg: msg,
       })
-      .then((res) => console.log(""))
+      .then((res) => alert('User has been notified'))
       .catch((err) => console.log(err));
   }
 

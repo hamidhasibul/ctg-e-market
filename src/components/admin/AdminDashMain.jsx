@@ -1,7 +1,7 @@
-import axios from "axios";
-import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+import axios from 'axios';
+import React from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 const AdminDashMain = () => {
   const [allPosts, setAllPosts] = useState([]);
@@ -16,7 +16,7 @@ const AdminDashMain = () => {
 
         setAllPosts(res.data);
       } catch (err) {
-        console.log("Error!");
+        console.log('Error!');
       }
     };
 
@@ -26,7 +26,7 @@ const AdminDashMain = () => {
 
         setAllUsers(res.data);
       } catch (error) {
-        console.log("Error!");
+        console.log('Error!');
       }
     };
 
@@ -36,7 +36,7 @@ const AdminDashMain = () => {
 
         setAllProducts(res.data);
       } catch (error) {
-        console.log("Error!");
+        console.log('Error!');
       }
     };
 
@@ -45,7 +45,7 @@ const AdminDashMain = () => {
         const res = await axios.get(`/api/orders/`);
         setAllOrders(res.data);
       } catch (error) {
-        console.log("Error!");
+        console.log('Error!');
       }
     };
 

@@ -1,22 +1,22 @@
-import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Store } from "../Store";
-import SellerProduct from "./SellerProduct";
-import ReactWhatsapp from "react-whatsapp";
+import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { Store } from '../Store';
+import SellerProduct from './SellerProduct';
+import ReactWhatsapp from 'react-whatsapp';
 
 const SellerInfo = () => {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, wish } = state;
   const [seller, setSeller] = useState([]);
   const [product, setProduct] = useState([]);
-  const country = "+88";
+  const country = '+88';
   const rootMsg = `Hello I'm contacting you from Ctg-E-Market`;
 
   const params = useParams();
   const { id } = params;
 
-  const existUser = localStorage.getItem("userInfo");
+  const existUser = localStorage.getItem('userInfo');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +29,7 @@ const SellerInfo = () => {
         console.log(res.data);
         setProduct(res.data);
       } catch (err) {
-        console.log("Error!");
+        console.log('Error!');
       }
     };
     fetchData();
@@ -37,19 +37,19 @@ const SellerInfo = () => {
 
   const handlerFollow = () => {
     if (!existUser) {
-      window.alert("Sorry. You must login.");
+      window.alert('Sorry. You must login.');
     } else {
       //If there is a user I am already following (localstorage), his id, from db
       const existItem = wish.wishItems.find((x) => x._id === seller._id);
       const quantity = existItem ? existItem.quantity : 1;
 
       if (existItem) {
-        window.alert("Sorry. You are already following this user.");
+        window.alert('Sorry. You are already following this user.');
         return;
       }
 
       ctxDispatch({
-        type: "WISH_ADD_ITEM",
+        type: 'WISH_ADD_ITEM',
         payload: { ...seller, quantity },
       });
     }
@@ -57,7 +57,7 @@ const SellerInfo = () => {
 
   const handlerUnfollow = (seller) => {
     ctxDispatch({
-      type: "WISH_REMOVE_ITEM",
+      type: 'WISH_REMOVE_ITEM',
       payload: seller,
     });
   };
