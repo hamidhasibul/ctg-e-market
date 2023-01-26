@@ -1,25 +1,25 @@
-import React, { useContext } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { Store } from '../Store';
+import React, { useContext } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Store } from "../Store";
 
 const Header = () => {
   const navigate = useNavigate();
 
-  const userInfo = localStorage.getItem('userInfo')
-    ? JSON.parse(localStorage.getItem('userInfo'))
+  const userInfo = localStorage.getItem("userInfo")
+    ? JSON.parse(localStorage.getItem("userInfo"))
     : null;
 
   const { state } = useContext(Store);
   const { cart, wish } = state;
 
   const signoutHandler = () => {
-    localStorage.removeItem('userInfo');
+    localStorage.removeItem("userInfo");
     alert(`You've logged out!!`);
-    navigate('/login');
+    navigate("/login");
   };
 
   const activeLink = ({ isActive }) =>
-    isActive ? 'nav-link active_link' : 'nav-link';
+    isActive ? "nav-link active_link" : "nav-link";
 
   return (
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
@@ -131,6 +131,14 @@ const Header = () => {
                             to="/admin/socialcontrol"
                           >
                             Social Control
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            class="dropdown-item nav-link"
+                            to="/admin/ordercontrol"
+                          >
+                            Orders
                           </Link>
                         </li>
                       </ul>

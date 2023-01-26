@@ -249,7 +249,7 @@ const AccountsUser = () => {
               </h5>
               <div className="account-orders text-center">
                 {orders.length === 0 ? (
-                  <h3 className="info">You currently have no orders!</h3>
+                  <h3 className="info">You currently made no orders!</h3>
                 ) : (
                   <Orders orders={orders} />
                 )}
