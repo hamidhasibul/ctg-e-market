@@ -21,6 +21,8 @@ import AdminSocialControl from "./pages/admin/AdminSocialControl";
 import AdminProductsControl from "./pages/admin/AdminProductsControl";
 import AdminOrdersControl from "./pages/admin/AdminOrdersControl";
 import AdminOrderControlInd from "./pages/admin/AdminOrderControlInd";
+import AdminUsersControl from "./pages/admin/AdminUsersControl";
+import AdminUserControlInd from "./pages/admin/AdminUserControlInd";
 
 function App() {
   return (
@@ -66,6 +68,22 @@ function App() {
             element={
               <ProtectedAdminRoute>
                 <AdminOrderControlInd />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="/admin/usercontrol"
+            element={
+              <ProtectedAdminRoute>
+                <AdminUsersControl />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="/admin/usercontrol/:id"
+            element={
+              <ProtectedAdminRoute>
+                <AdminUserControlInd />
               </ProtectedAdminRoute>
             }
           />

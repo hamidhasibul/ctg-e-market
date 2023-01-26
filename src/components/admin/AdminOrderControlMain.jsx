@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 
 const AdminOrderControlMain = () => {
   const [allOrders, setAllOrders] = useState([]);
-  //   const [indOrder, setIndOrder] = useState("");
 
   useEffect(() => {
     const fetchAllOrders = async () => {

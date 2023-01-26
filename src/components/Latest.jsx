@@ -1,28 +1,28 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import axios from 'axios';
+import React from "react";
+import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useState } from "react";
+import axios from "axios";
 
-import LatestSeller from './LatestSeller';
+import LatestSeller from "./LatestSeller";
 
 const Latest = () => {
   const [users, setUsers] = useState([]);
   const [products, setProducts] = useState([]);
 
-  const userInfo = localStorage.getItem('userInfo')
-    ? JSON.parse(localStorage.getItem('userInfo'))
+  const userInfo = localStorage.getItem("userInfo")
+    ? JSON.parse(localStorage.getItem("userInfo"))
     : null;
 
   const userId = userInfo && userInfo._id;
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios.get('/api/users/all');
+      const result = await axios.get("/api/users/all");
       console.log(result.data);
       setUsers(result.data);
 
-      const res = await axios.get('/api/products/');
+      const res = await axios.get("/api/products/");
       console.log(res.data);
       setProducts(res.data);
     };
@@ -43,10 +43,10 @@ const Latest = () => {
                 })
                 .slice(-3)
                 .map((product) => (
-                  <div class="card w-25 mx-2 mb-4" key={product._id}>
+                  <div class="card w-25 mx-2 mb-4 " key={product._id}>
                     <img
                       src={product.image}
-                      class="card-img-top card-image"
+                      class="card-img-top card-image px-4"
                       alt={product.name}
                     />
                     <Link to="/">

@@ -51,7 +51,7 @@ const AdminSocialControlMain = () => {
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">
-                Modal title
+                Delete Post
               </h5>
               <button
                 type="button"

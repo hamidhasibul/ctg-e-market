@@ -120,6 +120,14 @@ const Header = () => {
                         <li>
                           <Link
                             class="dropdown-item nav-link"
+                            to="/admin/usercontrol"
+                          >
+                            Users
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            class="dropdown-item nav-link"
                             to="/admin/productcontrol"
                           >
                             Products

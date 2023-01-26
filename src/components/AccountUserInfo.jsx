@@ -1,10 +1,10 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import UserInfoOrders from './UserInfoOrders';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import UserInfoOrders from "./UserInfoOrders";
 
 const AccountUserInfo = () => {
-  const userInfo = localStorage.getItem('userInfo')
-    ? JSON.parse(localStorage.getItem('userInfo'))
+  const userInfo = localStorage.getItem("userInfo")
+    ? JSON.parse(localStorage.getItem("userInfo"))
     : null;
 
   const id = userInfo && userInfo._id;
@@ -18,7 +18,7 @@ const AccountUserInfo = () => {
         console.log(result.data);
         setUserOrders(result.data);
       } catch (err) {
-        console.log('Error!');
+        console.log("Error!");
       }
     };
     fetchData();
@@ -27,7 +27,7 @@ const AccountUserInfo = () => {
   return (
     <>
       <div className="row userINfo">
-        <p className="mb-1">User's Orders</p>
+        <p className="mb-4 fw-bold">Your Pending Orders</p>
 
         {userOrders.length === 0 ? (
           <h3 className="info userOrders">You currently have no orders!</h3>

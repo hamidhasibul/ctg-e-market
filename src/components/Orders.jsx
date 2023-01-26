@@ -14,6 +14,33 @@ const Orders = ({ orders }) => {
   };
   return (
     <>
+      <div class="table-responsive mb-3">
+        <table class="table text-start align-middle table-bordered table-hover mb-0">
+          <thead>
+            <tr class="text-dark">
+              <th scope="col">Serial</th>
+              <th scope="col">Order ID</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders
+              .slice(pagesVisited, pagesVisited + productsPerPage)
+              .map((order, index) => (
+                <tr>
+                  <td>{index + 1}</td>
+                  <td>{order._id.substring(0, 10)}...</td>
+                  <td>
+                    <Link to={`/order/${order._id}`} className="linkReset">
+                      <i class="fa-solid fa-eye text-dark"></i>
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
+
       {orders
         .slice(pagesVisited, pagesVisited + productsPerPage)
         .map((order) => (

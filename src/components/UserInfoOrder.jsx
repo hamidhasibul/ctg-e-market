@@ -1,10 +1,10 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const UserInfoOrder = () => {
-  const userInfo = localStorage.getItem('userInfo')
-    ? JSON.parse(localStorage.getItem('userInfo'))
+  const userInfo = localStorage.getItem("userInfo")
+    ? JSON.parse(localStorage.getItem("userInfo"))
     : null;
 
   const userId = userInfo && userInfo._id;
@@ -14,7 +14,7 @@ const UserInfoOrder = () => {
 
   const navigate = useNavigate();
 
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
   const [order, setOrder] = useState([]);
 
   useEffect(() => {
@@ -24,27 +24,27 @@ const UserInfoOrder = () => {
 
         setOrder(data);
       } catch (err) {
-        alert('Order not found!');
+        alert("Order not found!");
       }
     };
 
     if (!userInfo) {
-      return navigate('/');
+      return navigate("/");
     }
 
     fetchOrder();
   }, [id, navigate, userInfo]);
 
   function sendOtp() {
-    var num = '880';
+    var num = "88" + order.phone;
     var msg = text;
 
     axios
-      .post('https://sowdaapp.com/sendotp.php', {
+      .post("https://sowdaapp.com/sendotp.php", {
         num: num,
         msg: msg,
       })
-      .then((res) => alert('User has been notified'))
+      .then((res) => alert("User has been notified"))
       .catch((err) => console.log(err));
   }
 
@@ -55,124 +55,158 @@ const UserInfoOrder = () => {
           Go Back
         </Link>
         <div className="row orderRow my-2">
-          <h3 className="text-center">My Order No: {order._id}</h3>
+          <h3 className="text-center my-2">Order No: {order._id}</h3>
         </div>
-        <div className="row">
+        <div className="row mt-5">
           <div className="col-lg-8">
-            <div className="order-cards d-flex flex-wrap justify-content-center">
-              {order.orderItems
-                ?.filter((item) => {
-                  return item.sellerId === userId;
-                })
-                ?.map((item) => (
-                  <div class="card mx-2 mb-4 w-25" key={item._id}>
-                    <img
-                      src={item.image}
-                      class="card-img-top card-image"
-                      alt={item.name}
-                    />
+            <div className="table-responsive">
+              <table class="table text-start align-middle table-bordered table-hover mb-0">
+                <thead>
+                  <tr class="text-dark">
+                    <th scope="col">Serial</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Base Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {order.orderItems
+                    ?.filter((item) => {
+                      return item.sellerId === userId;
+                    })
+                    ?.map((item, index) => (
+                      <tr>
+                        <td>{index + 1}</td>
+                        <td>{item.name}</td>
+                        <td>
+                          {item.image ? (
+                            <img
+                              src={item.image}
+                              alt=""
+                              style={{ height: "4rem" }}
+                            />
+                          ) : (
+                            <p>No Image Posted</p>
+                          )}
+                        </td>
+                        <td>{item.quantity}</td>
 
-                    <div class="card-body">
-                      <h5 class="card-title">
-                        <Link
-                          to={`../${item.slug}`}
-                          className="product-link text-dark"
-                        >
-                          {item.name}
-                        </Link>
-                      </h5>
-                      <p class="card-text ">
-                        <span>{item.category}</span>
-                        <br />
-                        <span>{item.price} Taka</span>
-                        <br />
-                      </p>
-                    </div>
-                  </div>
-                ))}
+                        <td>{item.price}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
             </div>
           </div>
           <div className="col-lg-4">
-            <div className="infoGroups">
-              <div className="info-group">
-                <span>Name:</span>
-                <span>{order.name}</span>
+            {/* Info Starts */}
+
+            <div class="container-fluid pt-4 px-4">
+              <div class="row bg-light rounded align-items-center justify-content-center mx-0 mb-3">
+                <div class="col-md-12 text-center py-4">
+                  <div className="infoGroups">
+                    <div className="info-group">
+                      <span className="fw-bold">Customer Name:</span>
+                      <span> {order.name}</span>
+                    </div>
+                    <div className="info-group">
+                      <span className="fw-bold">Email:</span>
+                      <span> {order.email}</span>
+                    </div>
+                    <div className="info-group">
+                      <span className="fw-bold">Phone:</span>
+                      <span> {order.phone}</span>
+                    </div>
+                    <div className="info-group">
+                      <span className="fw-bold">Address:</span>
+                      <span> {order.address}</span>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="info-group">
-                <span>Email:</span>
-                <span>{order.email}</span>
-              </div>
-              <div className="info-group">
-                <span>Phone:</span>
-                <span>{order.phone}</span>
-              </div>
-              <div className="info-group">
-                <span>Address:</span>
-                <span>{order.address}</span>
+
+              <div className="row bg-light rounded align-items-center justify-content-center mx-0 mb-3">
+                <div className="col-md-12 py-4">
+                  <div className="infoGroups">
+                    <div className="info-group">
+                      <span className="fw-bold">Sub Total Price:</span>
+                      {/* that it does not count all ordered products, but only mine */}
+                      <span>
+                        {" "}
+                        $
+                        {order.orderItems
+                          ?.filter((item) => item.sellerId === userId)
+                          ?.reduce((a, v) => (a = a + v.price * v.quantity), 0)
+                          ?.toFixed(2)}
+                      </span>
+                    </div>
+                    <div className="info-group">
+                      {/* Earnings for the main site administrator per Order -> minus -> 10% for earnings of the site's main administrator, for each order */}
+                      <span className="fw-bold">Admin Fee:</span>
+                      <span>
+                        {" "}
+                        $
+                        {(
+                          order.orderItems
+                            ?.filter((item) => item.sellerId === userId)
+                            ?.reduce(
+                              (a, v) => (a = a + v.price * v.quantity),
+                              0
+                            ) * 0.1
+                        )?.toFixed(2)}
+                      </span>
+                    </div>
+                    <div className="info-group">
+                      <span className="fw-bold">Total Price:</span>
+                      <span>
+                        {" "}
+                        $
+                        {(
+                          order.orderItems
+                            ?.filter((item) => item.sellerId === userId)
+                            ?.reduce(
+                              (a, v) => (a = a + v.price * v.quantity),
+                              0
+                            ) -
+                          order.orderItems
+                            ?.filter((item) => item.sellerId === userId)
+                            ?.reduce(
+                              (a, v) => (a = a + v.price * v.quantity),
+                              0
+                            ) *
+                            0.1
+                        )?.toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="infoGroups">
+                    <div className="info-group">
+                      <span className="fw-bold">Paid:</span>{" "}
+                      {order.isPaid ? (
+                        <span> Paid at {order.paidAt} </span>
+                      ) : (
+                        <span>Not Paid!</span>
+                      )}
+                    </div>
+                    <div className="info-group">
+                      <span className="fw-bold">Delivered:</span>{" "}
+                      {order.isDelivered ? (
+                        <span> Delivered at {order.deliveredAt} </span>
+                      ) : (
+                        <span>Not Delivered!</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="infoGroups">
-              <div className="info-group">
-                <span>Sub Total Price:</span>
-                {/* that it does not count all ordered products, but only mine */}
-                <span>
-                  $
-                  {order.orderItems
-                    ?.filter((item) => item.sellerId === userId)
-                    ?.reduce((a, v) => (a = a + v.price * v.quantity), 0)
-                    ?.toFixed(2)}
-                </span>
-              </div>
-              <div className="info-group">
-                {/* Earnings for the main site administrator per Order -> minus -> 10% for earnings of the site's main administrator, for each order */}
-                <span>Admin Fee:</span>
-                <span>
-                  $
-                  {(
-                    order.orderItems
-                      ?.filter((item) => item.sellerId === userId)
-                      ?.reduce((a, v) => (a = a + v.price * v.quantity), 0) *
-                    0.1
-                  )?.toFixed(2)}
-                </span>
-              </div>
-              <div className="info-group">
-                <span>Total Price:</span>
-                <span>
-                  $
-                  {(
-                    order.orderItems
-                      ?.filter((item) => item.sellerId === userId)
-                      ?.reduce((a, v) => (a = a + v.price * v.quantity), 0) -
-                    order.orderItems
-                      ?.filter((item) => item.sellerId === userId)
-                      ?.reduce((a, v) => (a = a + v.price * v.quantity), 0) *
-                      0.1
-                  )?.toFixed(2)}
-                </span>
-              </div>
-            </div>
-            <div className="infoGroups">
-              <div className="info-group">
-                <span>Paid:</span>
-                {order.isPaid ? (
-                  <span> Paid at {order.paidAt} </span>
-                ) : (
-                  <span>Not Paid!</span>
-                )}
-              </div>
-              <div className="info-group">
-                <span>Delivered:</span>
-                {order.isDelivered ? (
-                  <span> Delivered at {order.deliveredAt} </span>
-                ) : (
-                  <span>Not Delivered!</span>
-                )}
-              </div>
-            </div>
+
+            {/* Info Ends */}
+
             <div className="infoGroups my-5">
               <div className="info-group">
-                <h4 className="mb-3">Notify User</h4>
+                <h4 className="mb-3">Notify Customer</h4>
                 <input
                   type="text"
                   className="form-control mb-2"
